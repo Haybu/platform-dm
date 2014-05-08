@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>  
+    
+     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>        
+        <postgres.jdbc.version>9.1-901.jdbc4</postgres.jdbc.version>
+        <persistence.eclipselink.version>2.5.1</persistence.eclipselink.version>
+        <persistence.eclipselink.processor.version>2.5.1</persistence.eclipselink.processor.version>
+        <spring.boot.version>1.0.2.RELEASE</spring.boot.version>
+        <junit.version>4.11</junit.version>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
+        <maven.version>3.1.1</maven.version>  
+        <java.version>1.7</java.version>
+        
+        <platform.version>1.0.0.BUILD-SNAPSHOT</platform.version>
+    </properties>    
+    
+    <!-- parent is spring boot -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.0.2.RELEASE</version>
+        <relativePath>org.springframework.boot:spring-starter-parent</relativePath>
+    </parent>
+    
+        
+    <groupId>com.company-name.platform-name</groupId>
+    <artifactId>plat-dependencies</artifactId>
+    <version>${platform.version}</version>
+    <packaging>pom</packaging>    
+    
+    <name>Platform Build Dependencies</name>
+    <description>Platform Build Dependencies</description>
+    <url>http://projects.company-name.com/platform-name/</url>
+    
+    <organization>
+	<name>Company, Inc.</name>
+	<url>http://www.company-name.com</url>
+    </organization>
+    
+    <licenses>
+	<license>
+            <name>company-name License, Version 1.0</name>
+            <url>http://www.company-name/licenses/LICENSE-1.0</url>
+        </license>
+    </licenses>
+    
+    <scm>
+	<url>https://github.com/company-projects/platform-name</url>
+    </scm>
+    
+    <developers>
+        <developer>
+            <id>sfrensely</id>
+            <name>Shane Frensley</name>
+            <email>sfrensely at company-name.com</email>
+            <organization>company-name, Inc.</organization>
+            <organizationUrl>http://www.company-name.com</organizationUrl>
+            <roles>
+		<role>Dev Engineering</role>
+            </roles>
+	</developer>
+	<developer>
+            <id>hmohamed</id>
+            <name>Haytham Mohamed</name>
+            <email>hmohamed at company-name.com</email>
+            <organization>company-name, Inc.</organization>
+            <organizationUrl>http://www.company-name.com</organizationUrl>
+            <roles>
+		<role>Dev Engineering</role>
+            </roles>
+	</developer>
+    </developers>   
+    
+    <!-- list non web stuff here. 
+         general dependencies 
+         that other may consume 
+    -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+            </dependency>            
+            <dependency>
+                <groupId>org.eclipse.persistence</groupId>
+                <artifactId>eclipselink</artifactId>
+                <version>${persistence.eclipselink.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.persistence</groupId>
+                <artifactId>org.eclipse.persistence.jpa.modelgen.processor</artifactId>
+                <version>${persistence.eclipselink.processor.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgres.jdbc.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>        
+    
+</project>

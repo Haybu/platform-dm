@@ -1,0 +1,5 @@
+com/companyname/plat/security/services/PlatUserDetailsService.class
+com/companyname/plat/security/PlatSecurityComponentApplication.class
+com/companyname/plat/security/providers/LDPAuthenticationProvider.class
+com/companyname/plat/security/providers/DAOAuthenticationProvider.class
+com/companyname/plat/security/providers/CASAuthenticationProvider.class
