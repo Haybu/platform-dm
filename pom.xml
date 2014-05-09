@@ -6,11 +6,7 @@
     <version>1.0.0.BUILD-SNAPSHOT</version>
     <packaging>pom</packaging>
     
-    <name>Platform Root</name>
-    
-    <modules>
-        <module>plat-dependencies</module>
-    </modules>
+    <name>Platform Root</name>       
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -63,9 +59,11 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			 <modules>
+                            <module>plat-dependencies</module>
+                            <module>plat-parent</module>
                             <module>plat-repository</module>
                             <module>plat-services</module>
-                            <module>plat-apps</module>
+                            <module>plat-apps</module>                            
                         </modules>
 		</profile>
                 <profile>

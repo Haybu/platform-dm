@@ -6,7 +6,8 @@
         <artifactId>plat-services</artifactId>
         <version>${platform.version}</version>
     </parent>
-    <artifactId>plat-security</artifactId>
+    
+    <artifactId>plat-services-security</artifactId>
     <packaging>jar</packaging>
     
     <name> Service: Security </name>
@@ -36,7 +37,7 @@
         <dependency>
             <groupId>com.company-name.platform-name</groupId>
             <artifactId>plat-repository-persistence</artifactId>
-            <version>${platform.version}</version>
+            <version>${repository.persistence.version}</version>
         </dependency>
     </dependencies> 
     

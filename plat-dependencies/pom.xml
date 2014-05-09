@@ -50,30 +50,7 @@
     
     <scm>
 	<url>https://github.com/company-projects/platform-name</url>
-    </scm>
-    
-    <developers>
-        <developer>
-            <id>sfrensely</id>
-            <name>Shane Frensley</name>
-            <email>sfrensely at company-name.com</email>
-            <organization>company-name, Inc.</organization>
-            <organizationUrl>http://www.company-name.com</organizationUrl>
-            <roles>
-		<role>Dev Engineering</role>
-            </roles>
-	</developer>
-	<developer>
-            <id>hmohamed</id>
-            <name>Haytham Mohamed</name>
-            <email>hmohamed at company-name.com</email>
-            <organization>company-name, Inc.</organization>
-            <organizationUrl>http://www.company-name.com</organizationUrl>
-            <roles>
-		<role>Dev Engineering</role>
-            </roles>
-	</developer>
-    </developers>   
+    </scm>        
     
     <!-- list non web stuff here. 
          general dependencies 
