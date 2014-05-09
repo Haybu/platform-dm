@@ -125,12 +125,12 @@
 						<configuration>
 							<tasks>
 								<echo>[plat-parent version] Displaying value of 'platform.version' property</echo>
-								<echo>[version] = ${platform.version}</echo>
+								<echo>[platform.version] = ${platform.version}</echo>
 							</tasks>
                                                         
                                                         <tasks>
 								<echo>{project.version] Displaying value of 'project.version' property</echo>
-								<echo>[version] = ${project.version}</echo>
+								<echo>[project.version] = ${project.version}</echo>
 							</tasks>
 						</configuration>
 					</execution>
