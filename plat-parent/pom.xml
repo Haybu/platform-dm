@@ -12,6 +12,7 @@
     <properties>
         <!-- components versions -->
         <repository.persistence.version>1.2.0</repository.persistence.version>
+        <repository.database.version>1.2.0</repository.database.version>
         <service.security.version>${platform.version}</service.security.version>
     </properties>
             
