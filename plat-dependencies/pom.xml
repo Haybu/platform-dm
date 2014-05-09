@@ -7,23 +7,19 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>        
         <postgres.jdbc.version>9.1-901.jdbc4</postgres.jdbc.version>
         <persistence.eclipselink.version>2.5.1</persistence.eclipselink.version>
-        <persistence.eclipselink.processor.version>2.5.1</persistence.eclipselink.processor.version>
-        <spring.boot.version>1.0.2.RELEASE</spring.boot.version>
+        <persistence.eclipselink.processor.version>2.5.1</persistence.eclipselink.processor.version>       
         <junit.version>4.11</junit.version>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
         <maven.version>3.1.1</maven.version>  
-        <java.version>1.7</java.version>
-        
-        <platform.version>1.0.0.BUILD-SNAPSHOT</platform.version>
+        <java.version>1.7</java.version>               
     </properties>    
     
     <!-- parent is spring boot -->
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.0.2.RELEASE</version>
-        <relativePath>org.springframework.boot:spring-starter-parent</relativePath>
+        <groupId>com.company-name.platform-name</groupId>
+        <artifactId>plat-root</artifactId>
+        <version>${platform.version}</version>
     </parent>
     
         

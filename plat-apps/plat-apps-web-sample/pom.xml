@@ -1,13 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    
     <parent>
         <groupId>com.company-name.platform-name</groupId>
         <artifactId>plat-apps</artifactId>
         <version>${platform.version}</version>
     </parent>
+    
     <artifactId>plat-apps-web-sample</artifactId>
     <packaging>jar</packaging>
     
     <name>Apps: Sample Web</name>
+    
+     <properties>
+        <start-class>com.companyname.Application</start-class>
+    </properties> 
+    
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.company-name.platform-name</groupId>
+            <artifactId>plat-services-security</artifactId>
+            <version>${service.security.version}</version>
+        </dependency>
+         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>            
+        </dependency>       
+    </dependencies>
+    
+    
+     <!-- Print my version -->
+    <build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.1</version>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<echo>[plat-apps-web-sample] Displaying value of 'platform.version' property</echo>
+								<echo>[platform.version] = ${platform.version}</echo>
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+    
 </project>

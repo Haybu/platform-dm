@@ -1,0 +1,33 @@
+body {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.navbar {
+    margin-bottom: 20px;
+}
+.btn-xlarge {
+    padding: 18px 28px;
+    font-size: 22px;
+    line-height: normal;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+}
+.btn-xTiny {
+    padding: 2px 2px;
+    font-size: 9px;
+    line-height: normal;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 3px;
+}
+#view-area {
+    width:700px;
+    height: 500px;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+}
