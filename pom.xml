@@ -23,7 +23,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>1.0.2.RELEASE</version>
-        <relativePath>org.springframework.boot:spring-starter-parent</relativePath>
+        <!-- relativePath>org.springframework.boot:spring-starter-parent</relativePath -->
     </parent>  
     
     <developers>
@@ -74,6 +74,7 @@
 			 <modules>
                             <module>plat-dependencies</module>
                             <module>plat-parent</module>
+                            <module>plat-commons</module>
                             <module>plat-repository</module>
                             <module>plat-services</module>
                             <module>plat-apps</module>                            
@@ -89,6 +90,4 @@
                         </modules>
 		</profile>
         </profiles>
-
-    
 </project>

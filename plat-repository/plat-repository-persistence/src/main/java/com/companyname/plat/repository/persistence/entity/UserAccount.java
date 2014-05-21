@@ -79,6 +79,9 @@ public class UserAccount implements Serializable {
     @Basic(optional = false)
     @Column(name = "is_account_locked")
     private boolean isAccountLocked;
+    @Basic(optional = false)
+    @Column(name = "salt")
+    private String salt;
     @Column(name = "account_expired_date")
     @Temporal(TemporalType.DATE)
     private Date accountExpiredDate;
@@ -208,6 +211,14 @@ public class UserAccount implements Serializable {
 
     public void setUserProfile(UserProfile userProfile) {
         this.userProfile = userProfile;
+    }
+    
+    public void setSalt(String str) {
+        this.salt = str;
+    }
+    
+    public String getSalt() {
+        return this.salt;
     }
 
     @XmlTransient

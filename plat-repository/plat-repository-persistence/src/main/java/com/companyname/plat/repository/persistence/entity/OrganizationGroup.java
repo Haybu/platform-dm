@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "OrganizationGroup.findAll", query = "SELECT a FROM OrganizationGroup a"),
     @NamedQuery(name = "OrganizationGroup.findById", query = "SELECT a FROM OrganizationGroup a WHERE a.id = :id"),
-    @NamedQuery(name = "OrganizationGroup.findByName", query = "SELECT a FROM OrganizationGroup a WHERE a.name = :name"),
+    @NamedQuery(name = "OrganizationGroup.findByGroupName", query = "SELECT a FROM OrganizationGroup a WHERE a.groupName = :groupName"),
     @NamedQuery(name = "OrganizationGroup.findByDescription", query = "SELECT a FROM OrganizationGroup a WHERE a.description = :description")})
 public class OrganizationGroup implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -42,8 +42,8 @@ public class OrganizationGroup implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Long id;
-    @Column(name = "name")
-    private String name;
+    @Column(name = "group_name")
+    private String groupName;
     @Column(name = "description")
     private String description;
     @JoinColumn(name = "org_id", referencedColumnName = "id")
@@ -69,12 +69,12 @@ public class OrganizationGroup implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getGroupName() {
+        return groupName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setGroupName(String _name) {
+        this.groupName = _name;
     }
 
     public String getDescription() {

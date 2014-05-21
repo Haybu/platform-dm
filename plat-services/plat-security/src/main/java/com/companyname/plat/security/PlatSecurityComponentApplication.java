@@ -6,20 +6,32 @@
 
 package com.companyname.plat.security;
 
+import com.companyname.plat.commons.context.SprintContextPrinter;
+import com.companyname.plat.repository.PlatPersistenceComponentApplication;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 
 /**
  *
  * @author hmohamed
  */
-@Configuration
-@ComponentScan
 @EnableAutoConfiguration
-public class PlatSecurityComponentApplication {
-    public static void main(String[] args) throws Exception {
-	SpringApplication.run(PlatSecurityComponentApplication.class, args);
-    }
+@ComponentScan
+public class PlatSecurityComponentApplication 
+    extends PlatPersistenceComponentApplication   
+{    
+    
+        private static final boolean PRINT_MY_BEANS = false;
+            
+        public static void main(String[] args) throws Exception {
+            SpringApplication app = new SpringApplication(PlatSecurityComponentApplication.class);
+            app.setShowBanner(false);               
+            ApplicationContext ctx = app.run(args);   
+            if (PRINT_MY_BEANS) {
+                SprintContextPrinter.print(ctx);
+            }
+        }                     
+  
 }

@@ -7,38 +7,63 @@
 package com.companyname.plat.security.providers;
 
 import java.util.logging.Logger;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author hmohamed
+ * 
+ * could be injected with three dependencies:
+ *  1- userDetailsService
+ *  2- saltSource
+ *  3- passwordEncoder
  */
+@Component
 public class DAOAuthenticationProvider extends DaoAuthenticationProvider {
     
-    private static final Logger logger = Logger.getLogger(DAOAuthenticationProvider.class.getName());
-        
-    /**
-     * for auditing and logging purposes only
-     * @param userDetails
-     * @param authentication
-     * @throws AuthenticationException 
-     */
+    private static final Logger logger = 
+            Logger.getLogger(DAOAuthenticationProvider.class.getName()); 
+    
+    @Autowired
+    UserDetailsService userDetailsService;
+    
+    public DAOAuthenticationProvider() {}
+   
    @Override
-   protected void additionalAuthenticationChecks(UserDetails userDetails
-           , UsernamePasswordAuthenticationToken authentication) 
-          
-   {       
-       logger.info("platform: Start authenticating user [" + userDetails.getUsername() + "]");
+   public Authentication authenticate(Authentication authentication) 
+           throws AuthenticationException {
+       
+       // Determine username
+        String username = (authentication.getPrincipal() == null) ? 
+                "NONE_PROVIDED" : authentication.getName();
+        
+       logger.info("platform: Start authenticating user [" + username + "]");
        
        try {
-        super.additionalAuthenticationChecks(userDetails, authentication);
-       } catch (AuthenticationException ex) {
-           logger.info("platform: End authenticating user [" + userDetails.getUsername() + "] successfully");
+            Authentication auth = super.authenticate(authentication);
+            
+            logger.info("platform: End authenticating user [" 
+                   + username + "] successfully");
+            
+            return auth;
+       } 
+       catch (AuthenticationException ex) {
+           logger.info("platform: End authenticating user [" 
+                   + username + "] unsuccessfully");
            throw ex;
-       }       
+       }                
    }
+   
+   protected void doAfterPropertiesSet() throws Exception {
+       this.setUserDetailsService(userDetailsService);
+       this.setPasswordEncoder(new BCryptPasswordEncoder());       
+       super.doAfterPropertiesSet();        
+    }
     
 }

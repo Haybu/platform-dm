@@ -37,7 +37,7 @@ public class GroupMember implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Long id;
-    @JoinColumn(name = "group", referencedColumnName = "id")
+    @JoinColumn(name = "group_id", referencedColumnName = "id")
     @ManyToOne
     private OrganizationGroup group;
     @JoinColumn(name = "user_account_id", referencedColumnName = "id")

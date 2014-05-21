@@ -1,5 +1,8 @@
 /Users/hmohamed/gitworkspace/demo/platform-dm/plat-services/plat-security/src/main/java/com/companyname/plat/security/providers/CASAuthenticationProvider.java
-/Users/hmohamed/gitworkspace/demo/platform-dm/plat-services/plat-security/src/main/java/com/companyname/plat/security/providers/DAOAuthenticationProvider.java
 /Users/hmohamed/gitworkspace/demo/platform-dm/plat-services/plat-security/src/main/java/com/companyname/plat/security/providers/LDPAuthenticationProvider.java
+/Users/hmohamed/gitworkspace/demo/platform-dm/plat-services/plat-security/src/main/java/com/companyname/plat/security/providers/DAOAuthenticationProvider.java
+/Users/hmohamed/gitworkspace/demo/platform-dm/plat-services/plat-security/src/main/java/com/companyname/plat/security/adhoc/PasswordGenerator.java
+/Users/hmohamed/gitworkspace/demo/platform-dm/plat-services/plat-security/src/main/java/com/companyname/plat/security/services/PlatPasswordSaltService.java
 /Users/hmohamed/gitworkspace/demo/platform-dm/plat-services/plat-security/src/main/java/com/companyname/plat/security/PlatSecurityComponentApplication.java
 /Users/hmohamed/gitworkspace/demo/platform-dm/plat-services/plat-security/src/main/java/com/companyname/plat/security/services/PlatUserDetailsService.java
+/Users/hmohamed/gitworkspace/demo/platform-dm/plat-services/plat-security/src/main/java/com/companyname/plat/security/services/PlatCommonService.java

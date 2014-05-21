@@ -38,7 +38,17 @@
             <groupId>com.company-name.platform-name</groupId>
             <artifactId>plat-repository-persistence</artifactId>
             <version>${repository.persistence.version}</version>
-        </dependency>
+        </dependency>  
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>3.0</version>
+        </dependency>  
+        <dependency>
+            <groupId>com.company-name.platform-name</groupId>
+            <artifactId>plat-commons</artifactId>
+            <version>${platform.commons.version}</version>
+        </dependency>        
     </dependencies> 
     
 </project>

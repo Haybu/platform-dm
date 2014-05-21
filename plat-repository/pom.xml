@@ -14,8 +14,8 @@
     
     <name>Layer: Repository</name>
     <modules>
-        <module>plat-repository-persistence</module>
         <module>plat-repository-database</module>
+        <module>plat-repository-persistence</module>       
     </modules>
     
      <!-- Print my version -->

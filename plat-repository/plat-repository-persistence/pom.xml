@@ -43,7 +43,12 @@
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>org.eclipse.persistence.jpa.modelgen.processor</artifactId>            
             <scope>provided</scope>
-        </dependency>       
+        </dependency> 
+        <dependency>
+            <groupId>com.company-name.platform-name</groupId>
+            <artifactId>plat-commons</artifactId>
+            <version>${platform.commons.version}</version>
+        </dependency>      
     </dependencies>
     
     <!-- Print my version -->
