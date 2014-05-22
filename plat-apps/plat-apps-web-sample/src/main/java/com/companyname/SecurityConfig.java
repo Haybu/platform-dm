@@ -18,9 +18,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 /**
  * Created by hmohamed on 4/23/14.
  */
-@Configuration
-@Import({PlatSecurityComponentApplication.class})
-public class SecurityConfig extends WebSecurityConfigurerAdapter {   
+//@Configuration
+public class SecurityConfig {
+/**
+   extends WebSecurityConfigurerAdapter {   
     
             @Autowired
             DAOAuthenticationProvider dAOAuthenticationProvider;

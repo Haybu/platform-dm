@@ -6,19 +6,12 @@ package com.companyname.plat.repository;
  * and open the template in the editor.
  */
 
-import com.companyname.plat.commons.context.SprintContextPrinter;
-import com.companyname.plat.repository.persistence.dao.AccountRepository;
-import com.companyname.plat.repository.persistence.dao.GroupAuthorizationRepository;
-import com.companyname.plat.repository.persistence.dao.GroupMembersRepository;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 
 /**
  *
@@ -26,11 +19,13 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @EnableAutoConfiguration
-@ComponentScan
+@ComponentScan(basePackages={"com.companyname.plat.repository"})
+@PropertySources(value = {@PropertySource("classpath:application.properties")})
 public class PlatPersistenceComponentApplication         
 {                      
     public static void main(String[] args) throws Exception 
     {
+        
         SpringApplication app = new SpringApplication(PlatPersistenceComponentApplication.class);
         app.setShowBanner(false);
         app.run(args);  

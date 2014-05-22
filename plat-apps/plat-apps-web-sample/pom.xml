@@ -39,6 +39,12 @@
             <artifactId>plat-commons</artifactId>
             <version>${platform.commons.version}</version>
         </dependency> 
+        
+        <dependency>
+            <groupId>com.company-name.platform-name</groupId>
+            <artifactId>plat-repository-persistence</artifactId>
+            <version>${repository.persistence.version}</version>
+        </dependency>
                
         <dependency>
             <groupId>com.company-name.platform-name</groupId>

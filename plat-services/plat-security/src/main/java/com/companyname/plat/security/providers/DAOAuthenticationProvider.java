@@ -13,7 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  *
@@ -24,12 +24,14 @@ import org.springframework.stereotype.Component;
  *  2- saltSource
  *  3- passwordEncoder
  */
+@Service
 public class DAOAuthenticationProvider extends DaoAuthenticationProvider {
     
     private static final Logger logger = 
             Logger.getLogger(DAOAuthenticationProvider.class.getName()); 
     
-    //UserDetailsService userDetailsService;
+    @Autowired
+    UserDetailsService userDetailsService;
     
     public DAOAuthenticationProvider() {}
    
@@ -59,7 +61,7 @@ public class DAOAuthenticationProvider extends DaoAuthenticationProvider {
    }
    
    protected void doAfterPropertiesSet() throws Exception {
-       //this.setUserDetailsService(userDetailsService);
+       this.setUserDetailsService(userDetailsService);
        this.setPasswordEncoder(new BCryptPasswordEncoder());       
        super.doAfterPropertiesSet();        
     }
