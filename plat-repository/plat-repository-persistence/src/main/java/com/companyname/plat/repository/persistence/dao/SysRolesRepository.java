@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
  *
  * @author hmohamed
  */
+@Repository
 public interface SysRolesRepository extends BaseRepository <SysRoles, Long> {
     
 }

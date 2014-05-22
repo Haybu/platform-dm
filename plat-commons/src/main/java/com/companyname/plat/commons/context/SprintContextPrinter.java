@@ -6,6 +6,7 @@
 
 package com.companyname.plat.commons.context;
 
+import java.util.logging.Logger;
 import org.springframework.context.ApplicationContext;
 
 /**
@@ -14,22 +15,25 @@ import org.springframework.context.ApplicationContext;
  */
 public class SprintContextPrinter {
     
+    private static final Logger logger = 
+            Logger.getLogger(SprintContextPrinter.class.getName()); 
+    
     public static void print(ApplicationContext applicationContext) 
     {
         String[] beanNames = applicationContext.getBeanDefinitionNames();
         StringBuilder printBuilder = new StringBuilder(
-                "Spring Beans In Platform Persistence Module Context: ");        
-        printBuilder.append("\n<><<><><<<><><><><><><><><><><><");
+                "Spring Beans this module Context: ");        
+        printBuilder.append("\n<><<><><<<><><><><><><><><><><><>");
         
         for(String beanName : beanNames)
         {
             printBuilder.append("\n");
             printBuilder.append(" Bean Name: ");
             printBuilder.append(beanName);
-            printBuilder.append(" Bean Class: ");
+            printBuilder.append(" Bean Type: ");
             printBuilder.append(applicationContext.getBean(beanName).getClass());
         }
-        System.out.println(printBuilder.toString());
+        logger.info(printBuilder.toString());
     }
     
 }

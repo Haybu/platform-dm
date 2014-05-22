@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
  *
  * @author hmohamed
  */
+@Repository
 public interface ProfileRepository extends BaseRepository <UserProfile, Long> {
     
 }

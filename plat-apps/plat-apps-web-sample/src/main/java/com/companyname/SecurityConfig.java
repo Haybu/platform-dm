@@ -1,8 +1,16 @@
 package com.companyname;
 
+import com.companyname.plat.commons.context.SprintContextPrinter;
+import com.companyname.plat.security.PlatSecurityComponentApplication;
 import com.companyname.plat.security.providers.DAOAuthenticationProvider;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -11,11 +19,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  * Created by hmohamed on 4/23/14.
  */
 @Configuration
-public class SecurityConfig extends WebSecurityConfigurerAdapter {     
-           
+@Import({PlatSecurityComponentApplication.class})
+public class SecurityConfig extends WebSecurityConfigurerAdapter {   
+    
             @Autowired
-            DAOAuthenticationProvider dAOAuthenticationProvider;                        
-            
+            DAOAuthenticationProvider dAOAuthenticationProvider;
+                        
             @Override
             public void configure (AuthenticationManagerBuilder auth) 
                     throws Exception 
@@ -35,8 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                     .logout().deleteCookies().permitAll();
 
-            }        
-        
+            }                         
                             
         /*
         --------------------------- backups -----------------------------

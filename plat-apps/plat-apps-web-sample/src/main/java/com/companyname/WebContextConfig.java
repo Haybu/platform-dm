@@ -15,11 +15,6 @@ public class WebContextConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("login");
-    }
-    
-    @Import(PlatSecurityComponentApplication.class)
-    public static class PlatSecurityModuleConfigurer {
-        
-    }
+    }                
 }
 

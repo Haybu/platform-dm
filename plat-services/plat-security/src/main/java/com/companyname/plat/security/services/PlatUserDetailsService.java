@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -31,7 +32,6 @@ import org.springframework.stereotype.Component;
  *
  * @author hmohamed
  */
-@Component
 public class PlatUserDetailsService 
         extends PlatCommonService
         implements UserDetailsService 
@@ -39,13 +39,10 @@ public class PlatUserDetailsService
     private static final Logger logger = 
             Logger.getLogger(PlatUserDetailsService.class.getName()); 
     
-    @Autowired
     AccountRepository accountRepository;        
     
-    @Autowired
     GroupMembersRepository groupMembersRepository;        
     
-    @Autowired
     GroupAuthorizationRepository authRepository;        
     
     @Override

@@ -9,11 +9,13 @@ package com.companyname.plat.repository.persistence.dao;
 import com.companyname.plat.repository.persistence.entity.UserAccount;
 import java.util.List;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author hmohamed
  */
+@Repository
 public interface AccountRepository extends BaseRepository <UserAccount, Long> {
     
     public List<UserAccount> findByLoginName(@Param("loginName")String loginName);

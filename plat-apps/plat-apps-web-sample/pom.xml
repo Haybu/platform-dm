@@ -33,8 +33,13 @@
          <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>            
-        </dependency>           
-   
+        </dependency>  
+         <dependency>
+            <groupId>com.company-name.platform-name</groupId>
+            <artifactId>plat-commons</artifactId>
+            <version>${platform.commons.version}</version>
+        </dependency> 
+               
         <dependency>
             <groupId>com.company-name.platform-name</groupId>
             <artifactId>plat-services-security</artifactId>

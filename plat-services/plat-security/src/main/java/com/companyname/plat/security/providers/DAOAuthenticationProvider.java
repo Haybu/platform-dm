@@ -24,14 +24,12 @@ import org.springframework.stereotype.Component;
  *  2- saltSource
  *  3- passwordEncoder
  */
-@Component
 public class DAOAuthenticationProvider extends DaoAuthenticationProvider {
     
     private static final Logger logger = 
             Logger.getLogger(DAOAuthenticationProvider.class.getName()); 
     
-    @Autowired
-    UserDetailsService userDetailsService;
+    //UserDetailsService userDetailsService;
     
     public DAOAuthenticationProvider() {}
    
@@ -61,7 +59,7 @@ public class DAOAuthenticationProvider extends DaoAuthenticationProvider {
    }
    
    protected void doAfterPropertiesSet() throws Exception {
-       this.setUserDetailsService(userDetailsService);
+       //this.setUserDetailsService(userDetailsService);
        this.setPasswordEncoder(new BCryptPasswordEncoder());       
        super.doAfterPropertiesSet();        
     }

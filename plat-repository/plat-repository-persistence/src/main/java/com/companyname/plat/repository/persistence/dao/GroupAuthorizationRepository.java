@@ -9,11 +9,13 @@ package com.companyname.plat.repository.persistence.dao;
 import com.companyname.plat.repository.persistence.entity.GroupAuth;
 import com.companyname.plat.repository.persistence.entity.OrganizationGroup;
 import java.util.List;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author hmohamed
  */
+@Repository
 public interface GroupAuthorizationRepository extends BaseRepository <GroupAuth, Long> {
     
     public List<GroupAuth> findByGroup (OrganizationGroup group);

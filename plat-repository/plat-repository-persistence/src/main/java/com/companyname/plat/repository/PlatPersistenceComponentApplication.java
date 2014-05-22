@@ -7,29 +7,34 @@ package com.companyname.plat.repository;
  */
 
 import com.companyname.plat.commons.context.SprintContextPrinter;
+import com.companyname.plat.repository.persistence.dao.AccountRepository;
+import com.companyname.plat.repository.persistence.dao.GroupAuthorizationRepository;
+import com.companyname.plat.repository.persistence.dao.GroupMembersRepository;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
 /**
  *
  * @author hmohamed
  */
+@Configuration
 @EnableAutoConfiguration
 @ComponentScan
 public class PlatPersistenceComponentApplication         
-{
-    private static final boolean PRINT_MY_BEANS = false;
-            
+{                      
     public static void main(String[] args) throws Exception 
     {
         SpringApplication app = new SpringApplication(PlatPersistenceComponentApplication.class);
         app.setShowBanner(false);
-        ApplicationContext context = app.run(args);  
-        if (PRINT_MY_BEANS) {
-            SprintContextPrinter.print(context);
-        }
-    }
+        app.run(args);  
+        
+    }          
              
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
  *
  * @author hmohamed
  */
+@Repository
 public interface GroupMembersRepository 
         extends BaseRepository <GroupMember, Long> {
     
