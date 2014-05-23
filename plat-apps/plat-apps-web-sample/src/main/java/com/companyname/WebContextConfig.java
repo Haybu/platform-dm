@@ -1,10 +1,6 @@
 package com.companyname;
 
-import com.companyname.plat.security.PlatSecurityComponentApplication;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+// delete me
 
 /**
  * Created by hmohamed on 4/23/14.

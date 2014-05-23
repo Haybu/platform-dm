@@ -16,5 +16,10 @@ public class HomeController {
         model.addAttribute("technology", "Spring Boot");
         return "home";
     }
+    
+    @RequestMapping(value = {"/login"})
+    public String login(Model model) {        
+        return "login";
+    }
 
 }

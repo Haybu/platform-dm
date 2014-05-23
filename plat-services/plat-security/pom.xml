@@ -5,6 +5,7 @@
         <groupId>com.company-name.platform-name</groupId>
         <artifactId>plat-services</artifactId>
         <version>${platform.version}</version>
+        <relativePath>../</relativePath>
     </parent>
     
     <artifactId>plat-services-security</artifactId>
@@ -37,7 +38,7 @@
         <dependency>
             <groupId>com.company-name.platform-name</groupId>
             <artifactId>plat-repository-persistence</artifactId>
-            <version>${repository.persistence.version}</version>
+            <version>${module.persistence.version}</version>
         </dependency>  
         <dependency>
             <groupId>cglib</groupId>
@@ -47,7 +48,7 @@
         <dependency>
             <groupId>com.company-name.platform-name</groupId>
             <artifactId>plat-commons</artifactId>
-            <version>${platform.commons.version}</version>
+            <version>${module.commons.version}</version>
         </dependency>        
     </dependencies> 
     

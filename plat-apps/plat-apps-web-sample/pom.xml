@@ -6,6 +6,7 @@
         <groupId>com.company-name.platform-name</groupId>
         <artifactId>plat-apps</artifactId>
         <version>${platform.version}</version>
+        <relativePath>../</relativePath>   
     </parent>
     
     <artifactId>plat-apps-web-sample</artifactId>
@@ -37,13 +38,13 @@
          <dependency>
             <groupId>com.company-name.platform-name</groupId>
             <artifactId>plat-commons</artifactId>
-            <version>${platform.commons.version}</version>
+            <version>${module.commons.version}</version>
         </dependency> 
         
         <dependency>
             <groupId>com.company-name.platform-name</groupId>
             <artifactId>plat-repository-persistence</artifactId>
-            <version>${repository.persistence.version}</version>
+            <version>${module.persistence.version}</version>
         </dependency>
                
         <dependency>
@@ -60,8 +61,6 @@
             -->
         </dependency>
       
-       
- 
     </dependencies>
     
     

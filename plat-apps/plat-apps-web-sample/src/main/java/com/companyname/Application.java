@@ -22,8 +22,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 public class Application {
+    
+     private static final Logger logger = 
+                Logger.getLogger(Application.class.getName());
     
     private static final boolean PRINT_MY_BEANS = false;
 
@@ -45,12 +50,9 @@ public class Application {
     static class ServicesConfig            
             extends PlatPersistenceComponentApplication 
             implements ApplicationContextAware           
-    {
-        private static final Logger logger = 
-            Logger.getLogger(ServicesConfig.class.getName()); 
-        
+    {                
         public ServicesConfig(){
-            logger.info("Inner Services Config is loaded");
+            logger.info("... Inner Services Config is loaded");
         }
 
         @Override
@@ -61,17 +63,23 @@ public class Application {
     
     @Configuration
     @EnableAutoConfiguration
-    @Import({ServicesConfig.class})
+    @Import({ServicesConfig.class, SecurityConfig.class})
     @ComponentScan(excludeFilters = 
-            @ComponentScan.Filter({ Service.class, Repository.class, Configuration.class }))
-    static class WebApplicationConfiguration implements ApplicationContextAware
-    {
-            private static final Logger logger = 
-                Logger.getLogger(WebApplicationConfiguration.class.getName());
-            
+            @ComponentScan.Filter({ Service.class, Repository.class }))
+    static class WebApplicationConfiguration 
+                //extends WebMvcConfigurerAdapter
+                implements ApplicationContextAware
+    {                      
             public WebApplicationConfiguration(){
-                logger.info("Inner web Config is loaded");
+                logger.info("... Inner web Config is loaded");
             }
+            
+            /**
+            @Override
+            public void addViewControllers(ViewControllerRegistry registry) {
+                registry.addViewController("/login").setViewName("login");
+             }  
+             */
             
             @Override
             public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -79,17 +87,22 @@ public class Application {
             }
     }
     
-    /**
     @Configuration
+    @EnableAutoConfiguration
     static class SecurityConfig extends WebSecurityConfigurerAdapter {   
     
             @Autowired
             DAOAuthenticationProvider dAOAuthenticationProvider;
+            
+            public SecurityConfig() {
+                logger.info("... Inner security Config is loaded");
+            }
                         
             @Override
             public void configure (AuthenticationManagerBuilder auth) 
                     throws Exception 
             {
+                logger.info("... configuring web app with a custom DAO authentication provider");
                 auth.authenticationProvider(dAOAuthenticationProvider);
             }
 
@@ -107,14 +120,13 @@ public class Application {
 
             } 
     }
-    * */
     
     
      public static void print(String contextName, ApplicationContext applicationContext, Logger logger) 
         {
             String[] beanNames = applicationContext.getBeanDefinitionNames();
             StringBuilder printBuilder = new StringBuilder(
-                    "Spring Beans the " + contextName + " Context: ");        
+                    "Spring Beans in the " + contextName + " Context: ");        
             printBuilder.append("\n<><<><><<<><><><><><><><><><><><>");
 
             for(String beanName : beanNames)

@@ -9,7 +9,7 @@
     </parent>
     <artifactId>plat-commons</artifactId>
     <packaging>jar</packaging>
-    <version>${platform.commons.version}</version>
+    <version>${module.commons.version}</version>
     
     <name>Platform: Commons</name>
     

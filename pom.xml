@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+   
+  <!-- aggregator pom -->
+
     <modelVersion>4.0.0</modelVersion>   
     
     <name>Platform Root</name>       
@@ -9,22 +12,13 @@
         <main.basedir>${basedir}</main.basedir>
         <spring.boot.version>1.0.2.RELEASE</spring.boot.version>
         
-        <platform.version>1.0.0.BUILD-SNAPSHOT</platform.version>
+        <build.version>1.0.0.BUILD-SNAPSHOT</build.version>
     </properties>  
     
     <groupId>com.company-name.platform-name</groupId>
     <artifactId>plat-root</artifactId>
-    <version>${platform.version}</version>
-    
+    <version>${build.version}</version>
     <packaging>pom</packaging>
-    
-    <!-- parent is spring boot -->
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.0.2.RELEASE</version>
-        <!-- relativePath>org.springframework.boot:spring-starter-parent</relativePath -->
-    </parent>  
     
     <developers>
 		<developer>
@@ -71,8 +65,7 @@
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
-			 <modules>
-                            <module>plat-dependencies</module>
+			 <modules>                            
                             <module>plat-parent</module>
                             <module>plat-commons</module>
                             <module>plat-repository</module>
