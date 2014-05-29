@@ -9,6 +9,7 @@ package com.companyname.plat.security.providers;
 import com.companyname.plat.security.extension.PlatAOuthPasswordGrant;
 import com.companyname.plat.security.extension.PlatAuthentication;
 import com.companyname.plat.security.extension.PlatformTokens;
+import com.companyname.plat.security.services.PlatUserAuthenticationCache;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +38,8 @@ public class DAOAuthenticationProvider extends DaoAuthenticationProvider {
     @Autowired
     UserDetailsService userDetailsService;
     
-    
-    
-    
+    @Autowired
+    PlatUserAuthenticationCache cache;
     
     public DAOAuthenticationProvider() {}
    
@@ -56,18 +56,28 @@ public class DAOAuthenticationProvider extends DaoAuthenticationProvider {
         
        logger.info("platform: Start authenticating user [" + username + "]");
        
-       try {           
+       try {    
+            Authentication auth = null;
+           
+            // authenticate from cache first to enhance performance
+            auth = cache.authenticateFromCache(authentication);
+           
             // perform authentication against our user's database store
-            Authentication auth = super.authenticate(authentication);
+            if (auth.isAuthenticated()) {            
+                logger.info("User [" + username 
+                        + "] is successfully authenticated against the cache");
+            } else {
+                auth = super.authenticate(authentication);
+                cache.add(auth);
+                logger.info("User [" + username 
+                        + "] is successfully authenticated against DB store");
+            }
             
             // build platform authentication object
             Authentication platformAuthentication = 
                     PlatAuthentication.getPlatAuthentication(auth);
             
-            ((PlatAuthentication)platformAuthentication).setUserCredentials(credentials);
-            
-            logger.info("platform: End authenticating user [" 
-                   + username + "] successfully against user DB store");
+            ((PlatAuthentication)platformAuthentication).setUserCredentials(credentials);                        
                        
             return platformAuthentication;
             

@@ -41,10 +41,12 @@ public class PlatAuthentication extends UsernamePasswordAuthenticationToken {
     
     public PlatAuthentication (Object principal, Object credentials) {
         super(principal, credentials);
+        this.userCredentials = credentials;
     }
     
     public PlatAuthentication(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
         super(principal, credentials, authorities);
+        this.userCredentials = credentials;
     }
     
     public PlatformTokens getTokens() {

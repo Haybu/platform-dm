@@ -6,6 +6,7 @@
 /Users/hmohamed/gitworkspace/demo/platform-dm/plat-services/plat-security/src/main/java/com/companyname/plat/security/adhoc/PasswordGenerator.java
 /Users/hmohamed/gitworkspace/demo/platform-dm/plat-services/plat-security/src/main/java/com/companyname/plat/security/extension/PlatAOuthPasswordGrant.java
 /Users/hmohamed/gitworkspace/demo/platform-dm/plat-services/plat-security/src/main/java/com/companyname/plat/security/extension/PlatformTokens.java
+/Users/hmohamed/gitworkspace/demo/platform-dm/plat-services/plat-security/src/main/java/com/companyname/plat/security/services/PlatUserAuthenticationCache.java
 /Users/hmohamed/gitworkspace/demo/platform-dm/plat-services/plat-security/src/main/java/com/companyname/plat/security/services/PlatPasswordSaltService.java
 /Users/hmohamed/gitworkspace/demo/platform-dm/plat-services/plat-security/src/main/java/com/companyname/plat/security/PlatSecurityComponentApplication.java
 /Users/hmohamed/gitworkspace/demo/platform-dm/plat-services/plat-security/src/main/java/com/companyname/plat/security/services/PlatUserDetailsService.java
