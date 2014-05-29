@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title> drillMap Security Module </title>
+    <link rel="stylesheet" media="screen" href="" > </link>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet"> </link>
+    <link href="css/form-signin2.css" rel="stylesheet"> </link>
+
+
+</head>
+
+<body>
+
+ <div class="container">
+    <div th:if="${param.error}" class="alert alert-danger">
+     Invalid username and password.
+    </div>
+    <div th:if="${param.logout}" class="alert alert-info">
+     You have been logged out.
+    </div>
+
+    <div>
+         <form class="form-signin" th:action="@{/login}" method="post">
+           <h2 class="form-signin-heading">Please sign in</h2>
+           <label> User Name : </label>
+           <input class="form-control" type="text" name="username" placeholder="User Name" required="true" autofocus="true"/>
+           <label> Password: </label>
+           <input class="form-control" type="password" name="password" placeholder="Password" required="true"/>
+           <input class="btn btn-large btn-primary" type="submit" value="Sign In"/>
+         </form>
+    </div>
+ </div>
+
+<script src="js/jquery-2.1.0.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+</body>
+</html>

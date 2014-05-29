@@ -16,6 +16,7 @@
     
     <modules>
         <module>plat-apps-web-sample</module>
+        <module>oauth2_sample_web_app</module>
     </modules>
     
 </project>

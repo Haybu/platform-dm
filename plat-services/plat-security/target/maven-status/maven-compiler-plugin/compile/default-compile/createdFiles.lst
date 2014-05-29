@@ -1,8 +1,12 @@
 com/companyname/plat/security/services/PlatUserDetailsService.class
 com/companyname/plat/security/PlatSecurityComponentApplication.class
 com/companyname/plat/security/providers/DAOAuthenticationProvider.class
-com/companyname/plat/security/adhoc/PasswordGenerator.class
+com/companyname/plat/security/extension/PlatAOuthPasswordGrant.class
+com/companyname/plat/security/extension/PlatOAuthTokenService.class
+com/companyname/plat/security/extension/PlatformTokens.class
 com/companyname/plat/security/providers/LDPAuthenticationProvider.class
+com/companyname/plat/security/adhoc/PasswordGenerator.class
 com/companyname/plat/security/services/PlatPasswordSaltService.class
+com/companyname/plat/security/extension/PlatAuthentication.class
 com/companyname/plat/security/services/PlatCommonService.class
 com/companyname/plat/security/providers/CASAuthenticationProvider.class

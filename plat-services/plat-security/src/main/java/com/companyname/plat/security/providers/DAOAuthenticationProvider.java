@@ -6,6 +6,10 @@
 
 package com.companyname.plat.security.providers;
 
+import com.companyname.plat.security.extension.PlatAOuthPasswordGrant;
+import com.companyname.plat.security.extension.PlatAuthentication;
+import com.companyname.plat.security.extension.PlatformTokens;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -33,31 +37,46 @@ public class DAOAuthenticationProvider extends DaoAuthenticationProvider {
     @Autowired
     UserDetailsService userDetailsService;
     
+    
+    
+    
+    
     public DAOAuthenticationProvider() {}
    
    @Override
    public Authentication authenticate(Authentication authentication) 
            throws AuthenticationException {
        
-       // Determine username
+        // Determine username and password
         String username = (authentication.getPrincipal() == null) ? 
                 "NONE_PROVIDED" : authentication.getName();
         
+        String credentials = (authentication.getPrincipal() == null) ? 
+                "NONE_PROVIDED" : (String)authentication.getCredentials();
+        
        logger.info("platform: Start authenticating user [" + username + "]");
        
-       try {
+       try {           
+            // perform authentication against our user's database store
             Authentication auth = super.authenticate(authentication);
             
-            logger.info("platform: End authenticating user [" 
-                   + username + "] successfully");
+            // build platform authentication object
+            Authentication platformAuthentication = 
+                    PlatAuthentication.getPlatAuthentication(auth);
             
-            return auth;
+            ((PlatAuthentication)platformAuthentication).setUserCredentials(credentials);
+            
+            logger.info("platform: End authenticating user [" 
+                   + username + "] successfully against user DB store");
+                       
+            return platformAuthentication;
+            
+       } catch (AuthenticationException ex1) {
+           logger.log(Level.SEVERE, "Unsuccessfully authenticating user [" 
+                   + username + "] ", ex1);          
        } 
-       catch (AuthenticationException ex) {
-           logger.info("platform: End authenticating user [" 
-                   + username + "] unsuccessfully");
-           throw ex;
-       }                
+       
+       return null;
    }
    
    protected void doAfterPropertiesSet() throws Exception {
@@ -65,5 +84,18 @@ public class DAOAuthenticationProvider extends DaoAuthenticationProvider {
        this.setPasswordEncoder(new BCryptPasswordEncoder());       
        super.doAfterPropertiesSet();        
     }
+   
+   /**
+    * Using OAuth2 "password" flow, this method obtains an OAuth2 token using a users
+    * login and password.
+    * 
+    * @param userName
+    * @param password
+    * @return 
+    */
+   protected Authentication getOauth2Tokens(Object userName, Object password) {
+       
+       return null;
+   }
     
 }
