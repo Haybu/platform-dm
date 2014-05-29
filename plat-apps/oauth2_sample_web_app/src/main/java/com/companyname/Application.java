@@ -71,7 +71,7 @@ public class Application {
 
         @Override
         public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-            print("Services", applicationContext, logger);
+            //print("Services", applicationContext, logger);
         }
     }
     
@@ -101,7 +101,7 @@ public class Application {
             
             @Override
             public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-                print("Web", applicationContext, logger);
+                //print("Web", applicationContext, logger);
             }
     }
     
@@ -140,7 +140,7 @@ public class Application {
                     .successHandler(loginSuccessHandler())
                     .loginPage("/login").permitAll()
                     .and()
-                    .logout()
+                    .logout()                        
                         .invalidateHttpSession(true)
                         .deleteCookies().permitAll();
             } 
@@ -165,7 +165,7 @@ public class Application {
 	@Override
         public void configure(ResourceServerSecurityConfigurer resources)
         {
-            logger.info(">>> B2 inside ResourceServerConfiguration.configure(...)");
+            logger.info(">>> inside ResourceServerConfiguration.configure(...)");
 
             resources.resourceId(RESOURCE_ID);
 	}
@@ -173,7 +173,7 @@ public class Application {
 	@Override
 	public void configure(HttpSecurity http) throws Exception
         {
-            logger.info(">>> B3 inside ResourceServerConfiguration.configure(...)");
+            logger.info(">>> inside ResourceServerConfiguration.configure(...)");
 
             http
 		.requestMatchers().antMatchers("/api/greeting/**", "/oauth/users/**", "/oauth/clients/**")
@@ -212,58 +212,19 @@ public class Application {
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception
         {
-            logger.info(">>> B4 inside AuthorizationServerConfiguration.configure(...)");
+            logger.info(">>> inside AuthorizationServerConfiguration.configure(...)");
 		
-            clients.inMemory()
-                    .withClient("myapp")
-                    .resourceIds(RESOURCE_ID)
-                    .authorizedGrantTypes("authorization_code", "implicit")
-                    .authorities("ROLE_CLIENT")
-                    .scopes("read", "write")
-                    .secret("secret")
-                .and()
-                    .withClient("myapp-with-redirect")
-                    .resourceIds(RESOURCE_ID)
-                    .authorizedGrantTypes("authorization_code", "implicit")
-                    .authorities("ROLE_CLIENT")
-                    .scopes("read", "write")
-                    .secret("secret")
-                    .redirectUris(myAppRedirectUri)
-		.and()
-                    .withClient("my-client-with-registered-redirect")
-                    .resourceIds(RESOURCE_ID)
-                    .authorizedGrantTypes("authorization_code", "client_credentials")
-                    .authorities("ROLE_CLIENT")
-                    .scopes("read", "trust")
-                    .redirectUris("http://anywhere?key=value")
-		.and()
-                    .withClient("my-trusted-client")
-                    .authorizedGrantTypes("password", "authorization_code", "refresh_token", "implicit")
-                    .authorities("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT")
-                    .scopes("read", "write", "trust")
-                    .accessTokenValiditySeconds(60)
-		.and()
+            clients.inMemory()                                       
                     .withClient("my-trusted-client-with-secret")
                     .authorizedGrantTypes("password", "authorization_code", "refresh_token", "implicit", "client_credentials")
                     .authorities("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT")
                     .scopes("read", "write", "trust")
-                    .secret("somesecret")
-	 	.and()
- 		    .withClient("my-less-trusted-client")
-                    .authorizedGrantTypes("authorization_code", "implicit")
-                    .authorities("ROLE_CLIENT")
-                    .scopes("read", "write", "trust")
-                .and()
-		    .withClient("my-less-trusted-autoapprove-client")
-		    .authorizedGrantTypes("implicit")
-		    .authorities("ROLE_CLIENT")
-		    .scopes("read", "write", "trust")
-		    .autoApprove(true);			
+                    .secret("somesecret");	 				
 		}
 
 	@Bean
 	public TokenStore tokenStore() {
-            logger.info(">>> B5 inside AuthorizationServerConfiguration.tokenStore()");
+            logger.info(">>> inside AuthorizationServerConfiguration.tokenStore()");
 
             return new InMemoryTokenStore();
         }
@@ -271,7 +232,7 @@ public class Application {
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception
         {
-            logger.info(">>> B6 inside AuthorizationServerConfiguration.configure(...)");
+            logger.info(">>> inside AuthorizationServerConfiguration.configure(...)");
 
             endpoints.tokenStore(tokenStore)
                      .authenticationManager(authenticationManager);
@@ -280,7 +241,7 @@ public class Application {
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception
         {
-            logger.info(">>> B7 inside AuthorizationServerConfiguration.configure(...)");
+            logger.info(">>> inside AuthorizationServerConfiguration.configure(...)");
 		oauthServer.realm("myApp/client");
 	}
 

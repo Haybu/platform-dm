@@ -6,7 +6,7 @@
 
 package com.companyname.controller;
 
-import com.companyname.plat.security.extension.PlatAOuthPasswordGrant;
+import com.companyname.plat.security.extension.PlatOAuthPasswordGrant;
 import com.companyname.plat.security.extension.PlatAuthentication;
 import com.companyname.plat.security.extension.PlatformTokens;
 import java.io.IOException;
@@ -29,7 +29,7 @@ public class OnLoginSuccessHandler
                 Logger.getLogger(OnLoginSuccessHandler.class.getName());
     
     @Autowired
-    PlatAOuthPasswordGrant passwordGrant;
+    PlatOAuthPasswordGrant passwordGrant;
     
         @Override
         public void onAuthenticationSuccess(final HttpServletRequest request,

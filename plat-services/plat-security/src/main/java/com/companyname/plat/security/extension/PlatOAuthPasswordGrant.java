@@ -20,10 +20,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @ConfigurationProperties(prefix="oauth2")
-public class PlatAOuthPasswordGrant {
+public class PlatOAuthPasswordGrant {
     
     private static final Logger logger = 
-            Logger.getLogger(PlatAOuthPasswordGrant.class.getName());
+            Logger.getLogger(PlatOAuthPasswordGrant.class.getName());
     
     /**
      * supposed to be set and over-writeen automatically by spring 
@@ -35,7 +35,7 @@ public class PlatAOuthPasswordGrant {
     String clientId = null;   
     String clientSecret = null; 
     
-    public PlatAOuthPasswordGrant() {}
+    public PlatOAuthPasswordGrant() {}
     
      public String getAuthorizationEndPoint() {
         return authorizationEndPoint;
