@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.ApplicationContext;
@@ -205,22 +204,18 @@ public class Application {
 	@Qualifier("authenticationManagerBean")
 	private AuthenticationManager authenticationManager;
 
-	// we do not need this. keep it for now for readablility of other flows
-	@Value("${myapp.redirect:http://localhost:8080/platform/redirect}")
-	private String myAppRedirectUri;
-		
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception
         {
             logger.info(">>> inside AuthorizationServerConfiguration.configure(...)");
 		
-            clients.inMemory()                                       
+            clients.inMemory()                                     
                     .withClient("my-trusted-client-with-secret")
                     .authorizedGrantTypes("password", "authorization_code", "refresh_token", "implicit", "client_credentials")
                     .authorities("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT")
                     .scopes("read", "write", "trust")
                     .secret("somesecret");	 				
-		}
+        }
 
 	@Bean
 	public TokenStore tokenStore() {
