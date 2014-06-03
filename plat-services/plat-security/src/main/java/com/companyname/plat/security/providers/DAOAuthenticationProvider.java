@@ -6,9 +6,7 @@
 
 package com.companyname.plat.security.providers;
 
-import com.companyname.plat.security.extension.PlatOAuthPasswordGrant;
 import com.companyname.plat.security.extension.PlatAuthentication;
-import com.companyname.plat.security.extension.PlatformTokens;
 import com.companyname.plat.security.services.PlatUserAuthenticationCache;
 import java.util.logging.Level;
 import java.util.logging.Logger;

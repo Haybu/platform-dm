@@ -6,9 +6,6 @@
 
 package com.companyname.plat.security.extension;
 
-import com.companyname.plat.security.providers.DAOAuthenticationProvider;
-import java.nio.charset.Charset;
-import java.util.Arrays;
 import java.util.logging.Logger;
 import org.apache.oltu.oauth2.client.OAuthClient;
 import org.apache.oltu.oauth2.client.URLConnectionClient;
@@ -18,10 +15,6 @@ import org.apache.oltu.oauth2.client.response.OAuthJSONAccessTokenResponse;
 import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.apache.oltu.oauth2.common.message.types.GrantType;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.security.oauth2.common.OAuth2RefreshToken;
-import org.springframework.stereotype.Component;
 
 /**
  * 
