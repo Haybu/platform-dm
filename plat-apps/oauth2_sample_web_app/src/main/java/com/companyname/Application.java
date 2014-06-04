@@ -1,17 +1,14 @@
 package com.companyname;
 
 import com.companyname.controller.OnLoginSuccessHandler;
-import com.companyname.plat.commons.context.SprintContextPrinter;
 import com.companyname.plat.repository.PlatPersistenceComponentApplication;
 import com.companyname.plat.security.providers.DAOAuthenticationProvider;
 import java.util.logging.Logger;
-import org.springframework.beans.BeansException;
+import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -29,11 +26,9 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.ClientDetailsService;
-import org.springframework.security.oauth2.provider.approval.ApprovalStore;
-import org.springframework.security.oauth2.provider.approval.TokenApprovalStore;
+import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.security.web.util.AntPathRequestMatcher;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -41,37 +36,25 @@ import org.springframework.stereotype.Service;
 public class Application {
     
      private static final Logger logger = 
-                Logger.getLogger(Application.class.getName());
-    
-    private static final boolean PRINT_MY_BEANS = false;
+                Logger.getLogger(Application.class.getName());      
 
     public static void main(String[] args) 
     {
         SpringApplication app = new SpringApplication(WebApplicationConfiguration.class);
         app.setShowBanner(false);
-        ApplicationContext ctx = app.run(args);
-        if (PRINT_MY_BEANS) {
-                SprintContextPrinter.print(ctx);
-            }
-    }  
-    
+        app.run(args);        
+    }    
     
     @Configuration
     @EnableAutoConfiguration
     @ComponentScan(includeFilters = @ComponentScan.Filter({Service.class, Repository.class}), useDefaultFilters = false)
     //@PropertySources(value = {@PropertySource("classpath*:application.properties")})
     static class ServicesConfig            
-            extends PlatPersistenceComponentApplication 
-            implements ApplicationContextAware           
+            extends PlatPersistenceComponentApplication                       
     {                
         public ServicesConfig(){
             logger.info("... Inner Services Config is loaded");
-        }
-
-        @Override
-        public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-            //print("Services", applicationContext, logger);
-        }
+        }       
     }
     
     @Configuration
@@ -79,14 +62,12 @@ public class Application {
     @Import({ServicesConfig.class
                 , SecurityConfig.class
                 , ResourceServerConfiguration.class
-                , AuthorizationServerConfiguration.class
-                , Stuff.class})
+                , AuthorizationServerConfiguration.class})
     @ComponentScan(excludeFilters = 
             @ComponentScan.Filter({ Service.class, Repository.class }))
     static class WebApplicationConfiguration 
-                //extends WebMvcConfigurerAdapter
-                implements ApplicationContextAware
-    {                      
+                //extends WebMvcConfigurerAdapter                
+    {                          
             public WebApplicationConfiguration(){
                 logger.info("... Inner web Config is loaded");
             }
@@ -96,59 +77,58 @@ public class Application {
             public void addViewControllers(ViewControllerRegistry registry) {
                 registry.addViewController("/login").setViewName("login");
              }  
-             */
-            
-            @Override
-            public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-                //print("Web", applicationContext, logger);
-            }
+             */                       
     }
     
     @Configuration
     @EnableAutoConfiguration
-    static class SecurityConfig extends WebSecurityConfigurerAdapter {   
-    
-            @Autowired
-            DAOAuthenticationProvider dAOAuthenticationProvider;
+    static class SecurityConfig 
+        extends WebSecurityConfigurerAdapter 
+    {       
+        @Autowired
+        DAOAuthenticationProvider dAOAuthenticationProvider;
             
-            public SecurityConfig() {
-                logger.info("... Inner security Config is loaded");
-            }
+        public SecurityConfig() {
+            logger.info("Inner security Config is loaded");
+        }
                         
-            @Override
-            public void configure (AuthenticationManagerBuilder auth) 
-                    throws Exception 
-            {
-                logger.info("... configuring web app with a custom DAO authentication provider");
-                auth.authenticationProvider(dAOAuthenticationProvider);
-            }
+        @Override
+        public void configure (AuthenticationManagerBuilder auth) 
+                throws Exception 
+        {
+            logger.info("Configuring web app with a custom DAO authentication provider");
+            auth.authenticationProvider(dAOAuthenticationProvider);
+        }
             
-            @Bean
-            public OnLoginSuccessHandler loginSuccessHandler() {
-                return new OnLoginSuccessHandler();
-            }
+        @Bean
+        public OnLoginSuccessHandler loginSuccessHandler() {
+            return new OnLoginSuccessHandler();
+        }
 
-             @Override
-            protected void configure(HttpSecurity http) throws Exception {
-                http
-                    .authorizeRequests()
-                    .anyRequest().authenticated()
-                    .and()
-                    .csrf().requireCsrfProtectionMatcher(new AntPathRequestMatcher("/oauth/authorize")).disable()
-                    .formLogin()
-                    .successHandler(loginSuccessHandler())
-                    .loginPage("/login").permitAll()
-                    .and()
-                    .logout()                        
-                        .invalidateHttpSession(true)
-                        .deleteCookies().permitAll();
-            } 
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http
+                .authorizeRequests()
+                .anyRequest().authenticated()
+                .and()
+                .csrf().requireCsrfProtectionMatcher(
+                        new AntPathRequestMatcher("/oauth/authorize")).disable()
+                .formLogin()
+                .successHandler(loginSuccessHandler())
+                .loginPage("/login").permitAll()
+                .and()
+                .logout()                        
+                .invalidateHttpSession(true)
+                .deleteCookies().permitAll();
+        } 
             
-            @Override
-            @Bean
-            public AuthenticationManager authenticationManagerBean() throws Exception {
-                return super.authenticationManagerBean();
-            }
+        @Override
+        @Bean
+        public AuthenticationManager authenticationManagerBean() 
+                throws Exception 
+        {
+            return super.authenticationManagerBean();
+        }
     }
     
     
@@ -159,20 +139,20 @@ public class Application {
         
     @Configuration
     @EnableResourceServer
-    protected static class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
-
+    protected static class ResourceServerConfiguration 
+            extends ResourceServerConfigurerAdapter 
+    {
 	@Override
         public void configure(ResourceServerSecurityConfigurer resources)
         {
-            logger.info(">>> inside ResourceServerConfiguration.configure(...)");
-
+            logger.info("inside ResourceServerConfiguration.configure(...)");
             resources.resourceId(RESOURCE_ID);
 	}
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception
         {
-            logger.info(">>> inside ResourceServerConfiguration.configure(...)");
+            logger.info("inside ResourceServerConfiguration.configure(...)");
 
             http
 		.requestMatchers().antMatchers("/api/greeting/**", "/oauth/users/**", "/oauth/clients/**")
@@ -195,56 +175,55 @@ public class Application {
     @Configuration
     @EnableAuthorizationServer
     protected static class AuthorizationServerConfiguration 
-            extends AuthorizationServerConfigurerAdapter
-    {
-	@Autowired
-	private TokenStore tokenStore;
-		
+            extends AuthorizationServerConfigurerAdapter          
+    {	
 	@Autowired
 	@Qualifier("authenticationManagerBean")
-	private AuthenticationManager authenticationManager;
+	private AuthenticationManager authenticationManager;  
+        
+        @Autowired
+        DataSource appDataSource;
+        
+        @Bean
+        public JdbcClientDetailsService clientDetailsService() {
+            return new JdbcClientDetailsService(appDataSource);
+        }
 
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception
         {
-            logger.info(">>> inside AuthorizationServerConfiguration.configure(...)");
-		
-            clients.inMemory()                                     
-                    .withClient("my-trusted-client-with-secret")
-                    .authorizedGrantTypes("password", "authorization_code", "refresh_token", "implicit", "client_credentials")
-                    .authorities("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT")
-                    .scopes("read", "write", "trust")
-                    .secret("somesecret");	 				
+            logger.info("inside AuthorizationServerConfiguration.configure(...)");                       		
+            clients.jdbc(appDataSource).clients(clientDetailsService());                    				
         }
 
-	@Bean
+	@Bean    
 	public TokenStore tokenStore() {
-            logger.info(">>> inside AuthorizationServerConfiguration.tokenStore()");
-
-            return new InMemoryTokenStore();
-        }
+            logger.info("inside AuthorizationServerConfiguration.tokenStore(...)");                           
+            return new JdbcTokenStore(appDataSource);
+        }                
 
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception
         {
-            logger.info(">>> inside AuthorizationServerConfiguration.configure(...)");
-
-            endpoints.tokenStore(tokenStore)
+            logger.info("inside AuthorizationServerConfiguration.configure(...)");
+            endpoints.tokenStore(tokenStore())
                      .authenticationManager(authenticationManager);
 	}
 
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception
         {
-            logger.info(">>> inside AuthorizationServerConfiguration.configure(...)");
-		oauthServer.realm("myApp/client");
+            logger.info("inside AuthorizationServerConfiguration.configure(...)");
+            oauthServer.realm("myApp/client");
 	}
 
     }
 	
+    // not in use now. But keep it for future 3 legs scenarios
+    /**
     @Configuration
-    static class Stuff {
-	
+    static class Stuff 
+    {	
 	@Autowired
 	private ClientDetailsService clientDetailsService;
 
@@ -254,32 +233,12 @@ public class Application {
 	@Bean
 	public ApprovalStore approvalStore() throws Exception
         {
-            logger.info(">>> B8 inside Stuff.approvalStore()");
+            logger.info("inside Stuff.approvalStore()");
 
             TokenApprovalStore store = new TokenApprovalStore();
 		store.setTokenStore(tokenStore);
 		return store;
-            }
-	} 
-    
-    
-    public static void print(String contextName, ApplicationContext applicationContext, Logger logger) 
-    {
-        String[] beanNames = applicationContext.getBeanDefinitionNames();
-        StringBuilder printBuilder = new StringBuilder(
-                    "Spring Beans in the " + contextName + " Context: ");        
-        printBuilder.append("\n<><<><><<<><><><><><><><><><><><>");
-
-        for(String beanName : beanNames)
-        {
-            printBuilder.append("\n");
-            printBuilder.append(" Bean Name: ");
-            printBuilder.append(beanName);
-            printBuilder.append(" Bean Type: ");
-            printBuilder.append(applicationContext.getBean(beanName).getClass());
         }
-        
-        logger.info(printBuilder.toString());
-    }
-
+    }  
+    * **/
 }

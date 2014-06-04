@@ -86,6 +86,8 @@ public class PlatOAuthPasswordGrant {
                       getClientSecret().trim(),
                       getAuthorizationEndPoint().trim(),
                       getTokenEndPoint().trim());
+        
+        //template.setUseParametersForClientAuthentication(false);
 
         AccessGrant grant = template.exchangeCredentialsForAccess(userLoginName, userPassword, null);
             

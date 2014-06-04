@@ -47,7 +47,7 @@ public class DAOAuthenticationProvider extends DaoAuthenticationProvider {
        
         // Determine username and password
         String username = (authentication.getPrincipal() == null) ? 
-                "NONE_PROVIDED" : authentication.getName();
+                "NONE_PROVIDED" : authentication.getName();               
         
         String credentials = (authentication.getPrincipal() == null) ? 
                 "NONE_PROVIDED" : (String)authentication.getCredentials();
