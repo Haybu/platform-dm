@@ -12,11 +12,12 @@
     <artifactId>plat-apps</artifactId>
     <packaging>pom</packaging>
     
-    <name>Layer: Front-End Apps</name>
+    <name>Layer: Apps</name>
     
     <modules>
         <module>plat-apps-web-sample</module>
         <module>oauth2_sample_web_app</module>
+        <module>Redirect_Web_App_Sample</module>
     </modules>
     
 </project>

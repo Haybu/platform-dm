@@ -1,6 +1,6 @@
 package com.companyname;
 
-import com.companyname.controller.OnLoginSuccessHandler;
+import com.companyname.service.OnLoginSuccessHandler;
 import com.companyname.plat.repository.PlatPersistenceComponentApplication;
 import com.companyname.plat.security.providers.DAOAuthenticationProvider;
 import java.util.logging.Logger;
@@ -69,7 +69,7 @@ public class Application {
                 //extends WebMvcConfigurerAdapter                
     {                          
             public WebApplicationConfiguration(){
-                logger.info("... Inner web Config is loaded");
+                logger.info("Inner web Config is loaded");
             }
             
             /**
@@ -86,7 +86,7 @@ public class Application {
         extends WebSecurityConfigurerAdapter 
     {       
         @Autowired
-        DAOAuthenticationProvider dAOAuthenticationProvider;
+        DAOAuthenticationProvider daoAuthenticationProvider;
             
         public SecurityConfig() {
             logger.info("Inner security Config is loaded");
@@ -97,7 +97,7 @@ public class Application {
                 throws Exception 
         {
             logger.info("Configuring web app with a custom DAO authentication provider");
-            auth.authenticationProvider(dAOAuthenticationProvider);
+            auth.authenticationProvider(daoAuthenticationProvider);
         }
             
         @Bean
@@ -117,7 +117,8 @@ public class Application {
                 .successHandler(loginSuccessHandler())
                 .loginPage("/login").permitAll()
                 .and()
-                .logout()                        
+                .logout()    
+                .addLogoutHandler(null)
                 .invalidateHttpSession(true)
                 .deleteCookies().permitAll();
         } 

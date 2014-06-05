@@ -14,7 +14,7 @@
     <packaging>jar</packaging>    
     <name>Apps: Oauth2 Sample Web</name>
     
-     <properties>
+    <properties>
         <start-class>com.companyname.Application</start-class>
     </properties>
     
