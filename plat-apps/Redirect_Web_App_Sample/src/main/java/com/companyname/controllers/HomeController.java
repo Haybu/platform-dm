@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class HomeController {
 
-    @RequestMapping(value = {"/"})
+    @RequestMapping(value = {"/app"})
     public String home(Model model
             , @CookieValue("plat-access-token") String accessToken 
             , @CookieValue("plat-refresh-token") String refreshToken) 

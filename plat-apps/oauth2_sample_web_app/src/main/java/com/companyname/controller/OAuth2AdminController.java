@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -35,12 +35,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class OAuth2AdminController {
 
-    @Autowired
-	private ConsumerTokenServices tokenServices;
+        @Autowired
+        @Qualifier("consumerTokenServices")
+        private ConsumerTokenServices tokenServices;
 
-    @Autowired
-	private TokenStore tokenStore;
-
+        @Autowired       
+        private TokenStore tokenStore;
+        
+        @RequestMapping("/oauth/authentications/{token}")
+        @ResponseBody
+        public OAuth2Authentication getAuthenticationForAccessToken(@PathVariable String token) {
+            return tokenStore.readAuthentication(token);
+        }
 
 	@RequestMapping("/oauth/clients/{client}/users/{user}/tokens")
 	@ResponseBody

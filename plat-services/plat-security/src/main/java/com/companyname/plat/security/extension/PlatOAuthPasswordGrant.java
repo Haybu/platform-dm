@@ -25,7 +25,7 @@ public class PlatOAuthPasswordGrant {
             Logger.getLogger(PlatOAuthPasswordGrant.class.getName());
     
     /**
-     * supposed to be set and over-writeen automatically by spring 
+     * supposed to be set and over-written automatically by spring 
      * from application.properties file (inside common module). Property should
      * have "oauth2." as a prefix
      */

@@ -16,5 +16,6 @@
     
     <modules>
         <module>plat-security</module>
+        <module>users_preference_services</module>
     </modules>
 </project>

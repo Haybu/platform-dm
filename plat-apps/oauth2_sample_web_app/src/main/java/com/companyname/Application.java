@@ -1,8 +1,9 @@
 package com.companyname;
 
-import com.companyname.service.OnLoginSuccessHandler;
 import com.companyname.plat.repository.PlatPersistenceComponentApplication;
 import com.companyname.plat.security.providers.DAOAuthenticationProvider;
+import com.companyname.service.OnLoginSuccessHandler;
+import com.companyname.service.OnLogoutHandler;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,11 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.approval.ApprovalStore;
+import org.springframework.security.oauth2.provider.approval.TokenApprovalStore;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.security.web.util.AntPathRequestMatcher;
@@ -59,7 +64,7 @@ public class Application {
     
     @Configuration
     @EnableAutoConfiguration
-    @Import({ServicesConfig.class
+    @Import({Stuff.class, ServicesConfig.class
                 , SecurityConfig.class
                 , ResourceServerConfiguration.class
                 , AuthorizationServerConfiguration.class})
@@ -87,6 +92,12 @@ public class Application {
     {       
         @Autowired
         DAOAuthenticationProvider daoAuthenticationProvider;
+        
+        @Autowired
+        OnLoginSuccessHandler onLoginHandler;
+        
+        @Autowired
+        OnLogoutHandler onLogoutHandler;
             
         public SecurityConfig() {
             logger.info("Inner security Config is loaded");
@@ -99,11 +110,19 @@ public class Application {
             logger.info("Configuring web app with a custom DAO authentication provider");
             auth.authenticationProvider(daoAuthenticationProvider);
         }
-            
+         
+        /**
         @Bean
         public OnLoginSuccessHandler loginSuccessHandler() {
             return new OnLoginSuccessHandler();
         }
+        
+        @Bean
+        public OnLogoutHandler logoutHandler() {
+            return new OnLogoutHandler();
+        }
+        * **/
+               
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
@@ -114,11 +133,11 @@ public class Application {
                 .csrf().requireCsrfProtectionMatcher(
                         new AntPathRequestMatcher("/oauth/authorize")).disable()
                 .formLogin()
-                .successHandler(loginSuccessHandler())
+                .successHandler(onLoginHandler)
                 .loginPage("/login").permitAll()
                 .and()
                 .logout()    
-                .addLogoutHandler(null)
+                .addLogoutHandler(onLogoutHandler)
                 .invalidateHttpSession(true)
                 .deleteCookies().permitAll();
         } 
@@ -164,11 +183,13 @@ public class Application {
 		.antMatchers("/api/greeting/**").access("#oauth2.hasScope('read')")
 		.antMatchers("/api/greeting/**").access("#oauth2.hasScope('trust')")
 		.regexMatchers(HttpMethod.DELETE, "/oauth/users/([^/].*?)/tokens/.*")
-			.access("#oauth2.clientHasRole('ROLE_CLIENT') and (hasRole('ROLE_USER') or #oauth2.isClient()) and #oauth2.hasScope('write')")
+                    .access("#oauth2.clientHasRole('ROLE_CLIENT') and (hasRole('ROLE_USER') or #oauth2.isClient()) and #oauth2.hasScope('write')")
 		.regexMatchers(HttpMethod.GET, "/oauth/clients/([^/].*?)/users/.*")
-			.access("#oauth2.clientHasRole('ROLE_CLIENT') and (hasRole('ROLE_USER') or #oauth2.isClient()) and #oauth2.hasScope('read')")
+                    .access("#oauth2.clientHasRole('ROLE_CLIENT') and (hasRole('ROLE_USER') or #oauth2.isClient()) and #oauth2.hasScope('read')")
 		.regexMatchers(HttpMethod.GET, "/oauth/clients/.*")
-		.access("#oauth2.clientHasRole('ROLE_CLIENT') and #oauth2.isClient() and #oauth2.hasScope('read')");
+                    .access("#oauth2.clientHasRole('ROLE_CLIENT') and #oauth2.isClient() and #oauth2.hasScope('read')")
+                .regexMatchers(HttpMethod.GET, "/oauth/authentications/.*")
+                    .access("#oauth2.clientHasRole('ROLE_CLIENT') and #oauth2.isClient() and #oauth2.hasScope('read')");
 	}
 
     }
@@ -194,7 +215,8 @@ public class Application {
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception
         {
             logger.info("inside AuthorizationServerConfiguration.configure(...)");                       		
-            clients.jdbc(appDataSource).clients(clientDetailsService());                    				
+            clients.jdbc(appDataSource).clients(clientDetailsService())
+                ;                    				
         }
 
 	@Bean    
@@ -221,7 +243,6 @@ public class Application {
     }
 	
     // not in use now. But keep it for future 3 legs scenarios
-    /**
     @Configuration
     static class Stuff 
     {	
@@ -240,6 +261,15 @@ public class Application {
 		store.setTokenStore(tokenStore);
 		return store;
         }
+        
+        @Bean
+        public DefaultTokenServices defaultTokenServices() {
+            DefaultTokenServices defaultTokenService = new DefaultTokenServices();
+            defaultTokenService.setClientDetailsService(clientDetailsService);
+            defaultTokenService.setSupportRefreshToken(true);
+            defaultTokenService.setTokenStore(tokenStore);
+            return defaultTokenService;
+        }
     }  
-    * **/
+  
 }
