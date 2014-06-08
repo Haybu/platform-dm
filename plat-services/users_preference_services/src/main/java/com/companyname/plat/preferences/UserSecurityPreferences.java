@@ -26,10 +26,10 @@ public class UserSecurityPreferences {
         // for now, hard-coded to one value
         
         String app = "/w1/app";
-        String port = "9090";
+        String port = ":9090";
             
         logger.info("Reading the preferred app from the ref store") ;                                
-        return "http://" + serverName + ":" + port + "/" + app;
+        return "http://" + serverName + port + app;
     }
     
 }

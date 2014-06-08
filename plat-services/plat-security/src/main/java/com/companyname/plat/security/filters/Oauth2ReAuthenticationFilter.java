@@ -19,23 +19,15 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.token.TokenService;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.common.exceptions.InvalidGrantException;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.security.oauth2.provider.TokenRequest;
-import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
-import org.springframework.security.oauth2.provider.token.ConsumerTokenServices;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
-import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.stereotype.Component;
 import org.springframework.web.util.WebUtils;
 
 /**
@@ -48,19 +40,24 @@ public class Oauth2ReAuthenticationFilter implements Filter {
 
     private static final Logger logger
             = Logger.getLogger(Oauth2ReAuthenticationFilter.class.getName());
-
-    //@Autowired
-    DefaultTokenServices tokenService;
     
-    //@Autowired
-    TokenStore tokenStore;    
+    DefaultTokenServices tokenService;
+
+    TokenStore tokenStore;                
 
     private String accessTokenCookieName;
     private String refreshTokenCookieName;
     private String clientId;  
 
+  
     @Override
     public void doFilter(ServletRequest req, ServletResponse res,
+            FilterChain chain) throws IOException, ServletException 
+    {         
+        performFilter(req,res,chain);         
+    }
+    
+    public void performFilter(ServletRequest req, ServletResponse res,
             FilterChain chain) throws IOException, ServletException 
     {
 
@@ -86,19 +83,21 @@ public class Oauth2ReAuthenticationFilter implements Filter {
 
             if (refreshTokenCookie != null) {                
                 refreshTokenValue = accessTokenCookie.getValue();   
-                logger.info("refresh token cookie is retrieved from cookie with value = " + refreshTokenValue);                               
-                authentication = getAuthenticationFromRefreshToken(refreshTokenValue);
+                logger.info("refresh token cookie is retrieved from cookie with value = " + refreshTokenValue);                                               
             }
             
-            if (accessTokenCookie != null && authentication != null) {
+            if (accessTokenCookie != null) {
                 accessTokenValue = accessTokenCookie.getValue();
-                logger.info("access token cookie is retrieved from cookie with value = " + accessTokenValue);
-                 
-                accessTokenValue = refreshAccesTokenIfExpired(accessTokenValue, authentication);
-                logger.info("valid access token is: " + accessTokenValue);
+                logger.info("access token cookie is retrieved from cookie with value = " + accessTokenValue);                                                 
+            }
+            
+            if (accessTokenValue != null) {
+                authentication = getAuthenticationFromAccessToken(accessTokenValue);
+                logger.info("authentication object is obtained successfully via the access token");
             }
 
             if (authentication != null) {
+                /**
                 PlatAuthentication appAuthentication
                         = (PlatAuthentication) authentication;
                 PlatformTokens tokens = new PlatformTokens();
@@ -106,15 +105,31 @@ public class Oauth2ReAuthenticationFilter implements Filter {
                 tokens.setRefreshToken(refreshTokenValue);
                 appAuthentication.setTokens(tokens);
                 SecurityContextHolder.getContext().setAuthentication(appAuthentication);
+                * **/
+                
+                if (!authentication.isAuthenticated()) {
+                    logger.info("Although the authentication object is retrieved via the access token " +
+                            " however, it's marked as not authenticated.");
+                }
+                
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                logger.info("security context is loaded with the user's authentication object");
             } else {
                 authenticated = false;
+                logger.info("Authentication failure, no authentication is loaded into the security context");
             }
+                     
         }        
 
         if (authenticated) {
             Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
+            
+            for(String role: roles) {
+                logger.info("role found: " + role);
+            }
 
             if (roles.contains("ROLE_USER")) {
+                logger.info("This user has role of ROLE_USER");
                 request.getSession().setAttribute("myVale", "myvalue");
             }
             chain.doFilter(req, res);
@@ -141,7 +156,7 @@ public class Oauth2ReAuthenticationFilter implements Filter {
     }
 
     private Authentication getAuthenticationFromAccessToken(String _accessTokenValue) {
-        logger.info("obtain authentication object via access token");
+        logger.info("obtaining authentication object via access token");
         if (_accessTokenValue == null) {
             return null;
         }
@@ -149,7 +164,7 @@ public class Oauth2ReAuthenticationFilter implements Filter {
     }
     
     private Authentication getAuthenticationFromRefreshToken(String _refreshTokenValue) {
-        logger.info("obtain authentication object via refresh token");
+        logger.info("obtaining authentication object via refresh token");
         if (_refreshTokenValue == null) {
             return null;
         }
@@ -212,6 +227,6 @@ public class Oauth2ReAuthenticationFilter implements Filter {
 
     public void setTokenStore(TokenStore tokenStore) {
         this.tokenStore = tokenStore;
-    }
+    }       
 
 }

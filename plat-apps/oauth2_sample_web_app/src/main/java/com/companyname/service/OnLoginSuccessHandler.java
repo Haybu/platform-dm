@@ -120,8 +120,8 @@ public class OnLoginSuccessHandler
         String userName = (authentication.getPrincipal() == null) ? 
                 "NONE_PROVIDED" : authentication.getName();    
             
-        String userRefPage = null;
-               // userPrefs.getPreferredURL(request.getServerName(), userName);
+        String userRefPage = 
+                userPrefs.getPreferredURL(request.getServerName(), userName);
             
         logger.info("User will be redirected to a prefered application at " + userRefPage);           
                 

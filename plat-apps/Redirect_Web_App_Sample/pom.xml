@@ -34,16 +34,29 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency> 
+          <dependency>
+            <groupId>com.company-name.platform-name</groupId>
+            <artifactId>plat-repository-persistence</artifactId>
+            <version>${module.persistence.version}</version>
+        </dependency>
+        
          <dependency>
             <groupId>com.company-name.platform-name</groupId>
             <artifactId>plat-commons</artifactId>
-            <version>${module.commons.version}</version>   
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                     <artifactId>spring-boot-starter-security</artifactId>
-                </exclusion>
-            </exclusions>        
+            <version>${module.commons.version}</version>              
+        </dependency> 
+        
+         <dependency>
+            <groupId>com.company-name.platform-name</groupId>
+            <artifactId>plat-services-security</artifactId>
+            <version>${service.security.version}</version>                
+         </dependency>
+        
+        <!-- Oauth2 security -->
+        <dependency>
+            <groupId>org.springframework.security.oauth</groupId>
+            <artifactId>spring-security-oauth2</artifactId>
+            <version>2.0.0.BUILD-SNAPSHOT</version>
         </dependency> 
      </dependencies>
      
