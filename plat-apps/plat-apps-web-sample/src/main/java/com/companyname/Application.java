@@ -2,7 +2,6 @@ package com.companyname;
 
 import com.companyname.plat.commons.context.SprintContextPrinter;
 import com.companyname.plat.repository.PlatPersistenceComponentApplication;
-import com.companyname.plat.security.PlatSecurityComponentApplication;
 import com.companyname.plat.security.providers.DAOAuthenticationProvider;
 import java.util.logging.Logger;
 import org.springframework.beans.BeansException;

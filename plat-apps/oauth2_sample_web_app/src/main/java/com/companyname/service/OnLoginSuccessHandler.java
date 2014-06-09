@@ -7,7 +7,6 @@
 package com.companyname.service;
 
 import com.companyname.plat.commons.Constants;
-import com.companyname.plat.preferences.UserSecurityPreferences;
 import com.companyname.plat.security.extension.PlatAuthentication;
 import com.companyname.plat.security.extension.PlatOAuthPasswordGrant;
 import java.io.IOException;
@@ -23,7 +22,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 /**
  *
@@ -42,8 +40,8 @@ public class OnLoginSuccessHandler
     @Autowired
     private PlatOAuthPasswordGrant passwordGrant;   
     
-    @Autowired
-    UserSecurityPreferences userPrefs;
+    //@Autowired
+    //UserSecurityPreferences userPrefs;
     
     String cookiePath;
     int cookieExpireTimeLength; 
@@ -66,7 +64,7 @@ public class OnLoginSuccessHandler
             setCookies(request, response, authentication);
                 
             // redirect to user preferred app
-            setRedirectPerUserPreference(request, authentication);
+            // setRedirectPerUserPreference(request, authentication);
 
         } catch (Exception e) {
             logger.severe("Error on Success Login for userName: " 
@@ -109,6 +107,7 @@ public class OnLoginSuccessHandler
     * @param request 
     * @param authentication
     */
+    /**
     protected void setRedirectPerUserPreference(HttpServletRequest request
             , Authentication authentication) 
     {          
@@ -131,6 +130,7 @@ public class OnLoginSuccessHandler
             this.setDefaultTargetUrl(userRefPage);
         }    
     }
+    * **/
             
     
     public String getCookiePath(HttpServletRequest request) 

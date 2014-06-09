@@ -9,7 +9,7 @@
 	</classpath>
 	<web>
 		<link target="/">
-				<!-- NetBeans IDE failed to locate web sources for static documents, manual configuration is needed. -->
+                    <dir name="/Users/hmohamed/gitworkspace/demo/platform-dm/plat-apps/oauth2_sample_web_app/src/main/resources"></dir>
 		</link>
 	</web>  
 </application>  
