@@ -5,12 +5,11 @@
  */
 package com.companyname;
 
-import com.companyname.plat.security.providers.DAOAuthenticationProvider;
+import com.companyname.providers.DAOAuthenticationProvider;
 import com.companyname.service.OnLoginSuccessHandler;
 import com.companyname.service.OnLogoutHandler;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

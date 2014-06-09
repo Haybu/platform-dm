@@ -7,8 +7,8 @@
 package com.companyname.service;
 
 import com.companyname.plat.commons.Constants;
-import com.companyname.plat.security.extension.PlatAuthentication;
-import com.companyname.plat.security.extension.PlatOAuthPasswordGrant;
+import com.companyname.extension.PlatAuthentication;
+import com.companyname.extension.PlatOAuthPasswordGrant;
 import java.io.IOException;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
