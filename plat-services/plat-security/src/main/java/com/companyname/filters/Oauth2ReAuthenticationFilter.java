@@ -6,8 +6,6 @@
 package com.companyname.filters;
 
 import com.companyname.plat.commons.Constants;
-import com.companyname.extension.PlatAuthentication;
-import com.companyname.extension.PlatformTokens;
 import java.io.IOException;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -19,6 +17,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -61,17 +60,29 @@ public class Oauth2ReAuthenticationFilter implements Filter {
             FilterChain chain) throws IOException, ServletException 
     {
 
-        logger.info("Oauth2 Re-Authentication filter starts.");
-        
-        Boolean authenticated = true;
+        logger.info("Oauth2 Re-Authentication filter starts.");            
         
         HttpServletRequest request = (HttpServletRequest) req;
+        
+                // try
+        
+        String method = request.getMethod();
+        
+        logger.info("---> in filter Method = " + method);
+        
+        String cPath = request.getContextPath();
+        
+        logger.info("---> in filter context path = " + cPath);
+                
+                // end try
+        
+        Boolean authenticated = true;
 
         Authentication authentication
                 = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null) {
-            logger.info("user redirected and needs to be re-authenticated via oauth2 token stored in cookies");
+            logger.info("user needs to be re-authenticated via oauth2 token stored in cookies");
             
             logger.info("get access token cookie");
             Cookie accessTokenCookie = getCookie(request, getAccessTokenCookieName());
@@ -132,10 +143,13 @@ public class Oauth2ReAuthenticationFilter implements Filter {
                 logger.info("This user has role of ROLE_USER");
                 request.getSession().setAttribute("myVale", "myvalue");
             }
-            chain.doFilter(req, res);
-        } else {
-            throw new RuntimeException("No Oauth2 authentication object retrieved");
-        }
+            //chain.doFilter(req, res);
+        } //else {            
+            //HttpServletResponse response = (HttpServletResponse) res;
+            //response.sendRedirect("http://localhost.drillmap.com:8080"); // hardcoded for now        
+        //}
+        
+        chain.doFilter(req, res);
 
     }
     

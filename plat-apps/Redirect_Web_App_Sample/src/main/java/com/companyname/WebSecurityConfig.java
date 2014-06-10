@@ -6,6 +6,7 @@
 package com.companyname;
 
 import com.companyname.filters.Oauth2ReAuthenticationFilter;
+import com.companyname.services.OnLogoutHandler;
 import java.util.logging.Logger;
 import javax.servlet.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.AntPathRequestMatcher;
 
 @Configuration
 @Import({
@@ -41,12 +43,18 @@ public class WebSecurityConfig
     
     @Value("${oauth2.clientId}")
     String clientId;
+    
+    @Value("${plat.base.loginUrl}")
+    String loginURL;
 
     @Autowired
     DefaultTokenServices defaultTokenServices;
 
     @Autowired
     TokenStore tokenStore;
+    
+    @Autowired
+    OnLogoutHandler onLogoutHandler;
 
     public WebSecurityConfig() {
         logger.info("Redirect User app security Config is loaded");
@@ -68,7 +76,15 @@ public class WebSecurityConfig
         http.
             addFilterAfter(oauth2Filter(), UsernamePasswordAuthenticationFilter.class)
             .authorizeRequests()
-            .anyRequest().authenticated();
+            .anyRequest().authenticated()
+            .and()  
+                .formLogin()
+                .loginPage(loginURL)
+            .and()
+            .logout().addLogoutHandler(onLogoutHandler)
+            .and()
+                .csrf().requireCsrfProtectionMatcher(
+                        new AntPathRequestMatcher("/logout")).disable();
     }
 
 }

@@ -19,9 +19,10 @@
         <p th:text="'You are using ' + ${technology}" /> <br/>
         <p th:text="'Your Access Token ' + ${accessToken}" /> <br/>
         <p th:text="'Your Refresh Token ' + ${refreshToken}" />
-
-        <form th:action="@{/logout}" method="post">
-            <input type="submit" value="Sign Out"/>
+               
+         <form th:action="@{/logout}" method="post">
+            <input class="btn btn-xTiny btn-primary" type="submit" value="Sign Out"/>
+            <!-- input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/ -->
         </form>
     </div>
 

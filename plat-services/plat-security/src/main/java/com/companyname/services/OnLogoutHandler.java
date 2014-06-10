@@ -38,62 +38,29 @@ public class OnLogoutHandler implements LogoutHandler {
     
     @Autowired
     @Qualifier("defaultTokenServices")
-    DefaultTokenServices tokenService;
-    
-    
-    //private UserCache userCache;
+    DefaultTokenServices tokenService;               
 
     public void logout(HttpServletRequest request
                 , HttpServletResponse response
                 , Authentication authentication) 
     {
-        if (removeTokens(request, authentication)) {
-            logger.info("OAuth2 tokens are revoked after logging out.");
+        PlatCookieService cookieService = new PlatCookieService();
+        cookieService.setAccessTokenCookieName(getAccessTokenCookieName());
+        cookieService.setRefreshTokenCookieName(getRefreshTokenCookieName());
+        cookieService.setCookieDomain(getCookieDomain());
+        cookieService.setCookiePath(getCookiePath(request));
+        cookieService.setTokenService(getTokenService());
+        
+        // will take the tokens values out of the store
+        if (cookieService.removeTokens(request, authentication)) {
+            logger.info("OAuth2 tokens are revoked from DB store after logging out.");
         }
                 
-        cancelCookies(request, response); 
+        // clear tokens on cookies
+        cookieService.cancelCookies(request, response); 
         logger.info("Oauth2 tokens cookies are cancelled after logging out");
-    }
-    
-    private boolean removeTokens(HttpServletRequest request, Authentication authentication) {
-        String accessTokenValue = getCookieValue(request, getAccessTokenCookieName());
-        // refresh token will be revoked as well
-        return tokenService.revokeToken(accessTokenValue);         
-    }
-    
-    private Cookie getCookie(HttpServletRequest request, String name) {
-        return WebUtils.getCookie(request, name);
-    }
-    
-    private String getCookieValue(HttpServletRequest request, String key) {
-        Cookie cookie = getCookie(request, key);
-        return (cookie==null)? null : cookie.getValue();        
-    }
-    
-    private void cancelCookies(HttpServletRequest request
-                , HttpServletResponse response) {
-        cancelCookie(request, response, getAccessTokenCookieName());
-        cancelCookie(request, response, getRefreshTokenCookieName());
-    }
-    
-    private void cancelCookie(HttpServletRequest request
-            , HttpServletResponse response
-            , String _cookieName) 
-    {
-        logger.info("On Logout: cancelling cookie named: " + _cookieName);
-        Cookie cookie = new Cookie(_cookieName, null);
-        cookie.setMaxAge(0);
-        cookie.setPath(getCookiePath(request));
-        cookie.setDomain(getCookieDomain());
-        response.addCookie(cookie);
-    }
 
-    /**
-    @Required
-    public void setUserCache(final UserCache userCache) {
-        this.userCache = userCache;
-    }
-    * **/
+    }     
     
     public String getAccessTokenCookieName() {
         return (accessTokenCookieName == null)?
@@ -133,4 +100,13 @@ public class OnLogoutHandler implements LogoutHandler {
     public void setCookieDomain(String cookieDomain) {
         this.cookieDomain = cookieDomain;
     }
+    
+     public DefaultTokenServices getTokenService() {
+        return tokenService;
+    }
+
+    public void setTokenService(DefaultTokenServices tokenService) {
+        this.tokenService = tokenService;
+    }
+    
 }

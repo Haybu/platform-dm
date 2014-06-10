@@ -1,3 +1,4 @@
+com/companyname/services/PlatCookieService.class
 com/companyname/services/PlatUserAuthenticationCache.class
 com/companyname/providers/LDPAuthenticationProvider.class
 com/companyname/providers/CASAuthenticationProvider.class
