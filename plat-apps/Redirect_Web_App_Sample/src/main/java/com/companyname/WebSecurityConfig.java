@@ -76,7 +76,8 @@ public class WebSecurityConfig
         http.
             addFilterAfter(oauth2Filter(), UsernamePasswordAuthenticationFilter.class)
             .authorizeRequests()
-            .anyRequest().authenticated()
+            .anyRequest().hasRole("SUPERVISOR")
+            .and().exceptionHandling().accessDeniedPage("/403")
             .and()  
                 .formLogin()
                 .loginPage(loginURL)

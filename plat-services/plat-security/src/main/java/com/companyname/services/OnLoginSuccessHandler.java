@@ -57,7 +57,7 @@ public class OnLoginSuccessHandler
             passwordGrant.generatePlatTokens(authentication);
 
             // clear any existing cookies
-            cancelExistingCookiesIfAny(request, response); 
+            invalidateCookiesIfAny(request, response); 
 
             // set tokens in Cookies
             setCookies(request, response, authentication
@@ -75,7 +75,7 @@ public class OnLoginSuccessHandler
 
     }
 
-    private void cancelExistingCookiesIfAny(HttpServletRequest request,
+    private void invalidateCookiesIfAny(HttpServletRequest request,
             HttpServletResponse response) 
     {
         logger.info("Clear any existing old cookie before logging in");

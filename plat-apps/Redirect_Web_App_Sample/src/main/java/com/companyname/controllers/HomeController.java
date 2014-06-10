@@ -1,8 +1,14 @@
 package com.companyname.controllers;
 
+import com.companyname.services.OnLogoutHandler;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -11,18 +17,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class HomeController {
+    
+    @Value("${plat.base.loginUrl}")
+    String loginURL;
 
     @RequestMapping(value = {"/app"})
-    public String home(Model model
-            , @CookieValue("plat-access-token") String accessToken 
-            , @CookieValue("plat-refresh-token") String refreshToken) 
-    {                
-                                                   
-        model.addAttribute("accessToken", accessToken);
-        model.addAttribute("refreshToken", refreshToken);
-        model.addAttribute("technology", "the fantastic Spring Boot");
-        
+    public String home(Model model) 
+    {                                                                          
+        model.addAttribute("technology", "the fantastic Spring Boot");        
         return "home";
-    }      
+    }   
+    
+    @RequestMapping(value = {"/403"})
+    public String loginError(Model model, HttpServletRequest request) 
+            throws ServletException
+    {                                                                              
+        Authentication authentication
+                = SecurityContextHolder.getContext().getAuthentication();
+                
+        // if user logged in but not enough authorization
+        if (authentication != null) {
+            request.logout();
+        }
+        
+        return "redirect:" + loginURL + "?role_error";
+    }   
 
 }

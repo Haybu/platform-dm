@@ -14,11 +14,9 @@
 <body>
 
     <div class="container">
-        <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+        <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]! to W1 application</h1>
 
-        <p th:text="'You are using ' + ${technology}" /> <br/>
-        <p th:text="'Your Access Token ' + ${accessToken}" /> <br/>
-        <p th:text="'Your Refresh Token ' + ${refreshToken}" />
+        <p th:text="'You are using ' + ${technology}" /> <br/>        
                
          <form th:action="@{/logout}" method="post">
             <input class="btn btn-xTiny btn-primary" type="submit" value="Sign Out"/>

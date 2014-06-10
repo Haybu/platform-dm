@@ -19,6 +19,9 @@
 <body>
 
  <div class="container">
+    <div th:if="${param.role_error}" class="alert alert-danger">
+     You are not authorized to access this application.
+    </div>
     <div th:if="${param.error}" class="alert alert-danger">
      Invalid username and password.
     </div>
