@@ -25,7 +25,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {
-        Application.class
+        PlatApplication.class, PlatWebSecurityConfig.class
+        , PlatOauth2AuthServerConfig.class
+        , PlatOauth2ResourceServerConfig.class
        })
 public class LoginTest {
     

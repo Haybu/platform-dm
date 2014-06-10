@@ -9,10 +9,11 @@ import com.companyname.filters.Oauth2ReAuthenticationFilter;
 import java.util.logging.Logger;
 import javax.servlet.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.context.annotation.Import;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
@@ -20,14 +21,30 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+@Import({
+    PlatWebSecurityConfig.class
+        , PlatOauth2AuthServerConfig.class
+        , PlatOauth2ResourceServerConfig.class
+})
+@Order(2)
+public class WebSecurityConfig
+        extends WebSecurityConfigurerAdapter {
 
     private static final Logger logger
             = Logger.getLogger(WebSecurityConfig.class.getName());
     
+    @Value("${plat.security.accessTokenCookieName}") 
+    String accessTokenName;
+    
+    @Value("${plat.security.refreshTokenCookieName}")
+    String refreshTokenName;
+    
+    @Value("${oauth2.clientId}")
+    String clientId;
+
     @Autowired
     DefaultTokenServices defaultTokenServices;
-    
+
     @Autowired
     TokenStore tokenStore;
 
@@ -35,20 +52,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         logger.info("Redirect User app security Config is loaded");
     }
 
-    @Override
-    public void configure(AuthenticationManagerBuilder auth)
-            throws Exception {
-        auth
-                .inMemoryAuthentication()
-                .withUser("user").password("password").roles("USER");
-    }
-
     @Bean
     public Filter oauth2Filter() {
         Oauth2ReAuthenticationFilter filter = new Oauth2ReAuthenticationFilter();
-        filter.setAccessTokenCookieName("plat-access-token");
-        filter.setRefreshTokenCookieName("plat-refresh-token");
-        filter.setClientId("my-trusted-client-with-secret");
+        filter.setAccessTokenCookieName(accessTokenName);
+        filter.setRefreshTokenCookieName(refreshTokenName);
+        filter.setClientId(clientId);
         filter.setTokenService(defaultTokenServices);
         filter.setTokenStore(tokenStore);
         return filter;
@@ -57,20 +66,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.
-                addFilterAfter(oauth2Filter(), UsernamePasswordAuthenticationFilter.class)
-                .authorizeRequests()
-                .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                .and()
-                .logout();
+            addFilterAfter(oauth2Filter(), UsernamePasswordAuthenticationFilter.class)
+            .authorizeRequests()
+            .anyRequest().authenticated();
     }
 
-    @Override
-    @Bean
-    public AuthenticationManager authenticationManagerBean()
-            throws Exception {
-        return super.authenticationManagerBean();
-    }
-    
 }
