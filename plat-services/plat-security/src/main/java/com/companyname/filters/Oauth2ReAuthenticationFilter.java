@@ -63,19 +63,7 @@ public class Oauth2ReAuthenticationFilter implements Filter {
         logger.info("Oauth2 Re-Authentication filter starts.");            
         
         HttpServletRequest request = (HttpServletRequest) req;
-        
-                // try
-        
-        String method = request.getMethod();
-        
-        logger.info("---> in filter Method = " + method);
-        
-        String cPath = request.getContextPath();
-        
-        logger.info("---> in filter context path = " + cPath);
-                
-                // end try
-        
+                       
         Boolean authenticated = true;
 
         Authentication authentication

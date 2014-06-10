@@ -52,12 +52,12 @@ public class OnLogoutHandler implements LogoutHandler {
         cookieService.setTokenService(getTokenService());
         
         // will take the tokens values out of the store
-        if (cookieService.removeTokens(request, authentication)) {
+        if (cookieService.removeTokenValues(request, authentication)) {
             logger.info("OAuth2 tokens are revoked from DB store after logging out.");
         }
                 
         // clear tokens on cookies
-        cookieService.cancelCookies(request, response); 
+        cookieService.invalidateCookies(request, response); 
         logger.info("Oauth2 tokens cookies are cancelled after logging out");
 
     }     

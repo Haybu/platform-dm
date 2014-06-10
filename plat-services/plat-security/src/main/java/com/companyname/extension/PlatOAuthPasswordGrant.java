@@ -76,7 +76,7 @@ public class PlatOAuthPasswordGrant {
         String userLoginName = auth.getName();
         String userPassword = (String) auth.getUserCredentials();
         
-        logger.info("Getting OAuth tokens from URL: " + getTokenEndPoint().trim() 
+        logger.info("PlatOAuthPasswordGrant:: Getting OAuth tokens from URL: " + getTokenEndPoint().trim() 
                 + " for clientID: " + getClientId().trim()
                 + " and clientSecret: " + getClientSecret().trim()
                 + " for userName: " + userLoginName
@@ -92,14 +92,18 @@ public class PlatOAuthPasswordGrant {
         AccessGrant grant = template.exchangeCredentialsForAccess(userLoginName, userPassword, null);
             
         if (grant == null) {
-            logger.info("No OAuth tokens are obtained for user: " + auth.getName());
+            logger.info("PlatOAuthPasswordGrant:: No OAuth tokens are obtained for user: " + auth.getName());
             auth.setUserCredentials(null);  // clear user credentials/password            
         } else {
-            logger.info("OAuth tokens are obtained successfully for user: " + auth.getName());
+            logger.info("PlatOAuthPasswordGrant:: OAuth tokens are obtained successfully for user: " + auth.getName());
             PlatformTokens tokens = new PlatformTokens();
-            tokens.setAccessToken(isIssued(grant.getAccessToken()));
+            String accessToken = isIssued(grant.getAccessToken());
+            logger.info("PlatOAuthPasswordGrant:: OAuth2 Access Token generated: " + accessToken);
+            tokens.setAccessToken(accessToken);
             tokens.setExpiry(grant.getExpireTime());
-            tokens.setRefreshToken(isIssued(grant.getRefreshToken()));
+            String refreshToken = isIssued(grant.getRefreshToken());
+            logger.info("PlatOAuthPasswordGrant:: OAuth2 Refresh Token generated: " + refreshToken);
+            tokens.setRefreshToken(refreshToken);
             auth.setTokens(tokens);
         }
 

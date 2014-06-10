@@ -69,7 +69,7 @@ public class PlatCookieService {
         this.cookieDomain = cookieDomain;
     }        
     
-    public boolean removeTokens(HttpServletRequest request, Authentication authentication) {
+    public boolean removeTokenValues(HttpServletRequest request, Authentication authentication) {
         String accessTokenValue = getCookieValue(request, getAccessTokenCookieName());
         // refresh token will be revoked as well
         return tokenService.revokeToken(accessTokenValue);         
@@ -84,18 +84,27 @@ public class PlatCookieService {
         return (cookie==null)? null : cookie.getValue();        
     }
     
-    public void cancelCookies(HttpServletRequest request
-                , HttpServletResponse response) {
-        cancelCookie(request, response, getAccessTokenCookieName());
-        cancelCookie(request, response, getRefreshTokenCookieName());
+    public void invalidateCookies(HttpServletRequest request
+                , HttpServletResponse response) 
+    {
+        invalidateCookie(request, response, getAccessTokenCookieName());
+        invalidateCookie(request, response, getRefreshTokenCookieName());
     }
     
-    public void cancelCookie(HttpServletRequest request
+    public void invalidateCookie(HttpServletRequest request
             , HttpServletResponse response
             , String _cookieName) 
     {
         logger.info("cancelling cookie named: " + _cookieName);
-        Cookie cookie = new Cookie(_cookieName, null);
+        
+        // if cookie does not exist, do nothing
+        Cookie cookie = getCookie(request, _cookieName);
+        
+        if (cookie == null) {
+            return;
+        }
+        
+        cookie = new Cookie(_cookieName, null);
         cookie.setValue("");
         cookie.setMaxAge(0);
         cookie.setPath(getCookiePath());

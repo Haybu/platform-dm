@@ -84,7 +84,7 @@ public class OnLoginSuccessHandler
         cookieService.setRefreshTokenCookieName(getRefreshTokenCookieName());
         cookieService.setCookieDomain(this.getCookieDomain());
         cookieService.setCookiePath(this.getCookiePath(request));
-        cookieService.cancelCookies(request, response);
+        cookieService.invalidateCookies(request, response);
     }
 
     private void setCookies(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
