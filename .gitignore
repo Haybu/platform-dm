@@ -1,10 +1,32 @@
-# This is a comment
 # Ignore target at the top level
-/target/
-# Ignore child project's targets as well
-/*/target/
-# And any grandchildren ...
-/*/*/target/
-# Or you can do:
+# matches 'target' in any sub folder
 target/
-# which matches 'target' in any sub folder
+**/target/**
+.classpath/
+.metadata/
+*.tmp
+*.bak
+*.swp
+*~.nib
+.classpath
+.settings/
+.loadpath
+temp/
+
+############
+## Windows
+############
+
+# Windows image file caches
+Thumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Mac crap
+.DS_Store
+
+*.iml
+.idea/
+.idea/libraries/
+atlassian-ide-plugin.xml

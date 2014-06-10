@@ -73,19 +73,23 @@ public class WebSecurityConfig
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.
-            addFilterAfter(oauth2Filter(), UsernamePasswordAuthenticationFilter.class)
+        http
+            .addFilterAfter(oauth2Filter(), UsernamePasswordAuthenticationFilter.class)
             .authorizeRequests()
             .anyRequest().hasRole("SUPERVISOR")
             .and().exceptionHandling().accessDeniedPage("/403")
             .and()  
                 .formLogin()
                 .loginPage(loginURL)
+                //.permitAll()
             .and()
-            .logout().addLogoutHandler(onLogoutHandler)
+                .logout()
+                .addLogoutHandler(onLogoutHandler)
+                //.invalidateHttpSession(true)
+                //.deleteCookies("JSESSIONID")
+                //.permitAll()
             .and()
-                .csrf().requireCsrfProtectionMatcher(
-                        new AntPathRequestMatcher("/logout")).disable();
+                .csrf().requireCsrfProtectionMatcher(new AntPathRequestMatcher("/logout")).disable();
     }
 
 }

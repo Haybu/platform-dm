@@ -12,6 +12,7 @@ com/companyname/providers/DAOAuthenticationProvider.class
 com/companyname/PlatWebSecurityConfig.class
 com/companyname/adhoc/PasswordGenerator.class
 com/companyname/filters/Oauth2ReAuthenticationFilter.class
+com/companyname/providers/CacheAuthenticationProvider.class
 com/companyname/extension/PlatAuthentication.class
 com/companyname/services/PlatUserDetailsService.class
 com/companyname/PlatOauth2ResourceServerConfig.class
