@@ -19,7 +19,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @Configuration
 @EnableWebSecurity
-@Order(50)
+@Order(99)
 public class PlatWebSecurityConfig
         extends WebSecurityConfigurerAdapter {
     
@@ -40,13 +40,15 @@ public class PlatWebSecurityConfig
         logger.info("Common web security setup with a custom DAO authentication provider");
         auth.authenticationProvider(daoAuthenticationProvider);
     }   
-    
+
+    /**
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         logger.info("Platform: Oauth module security configuration loaded.");
         http.anonymous();
                 
     }
+     **/
 
     @Override
     @Bean
