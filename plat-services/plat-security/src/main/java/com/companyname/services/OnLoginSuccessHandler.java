@@ -44,6 +44,7 @@ public class OnLoginSuccessHandler
     int cookieExpireTimeLength;
     String accessTokenCookieName;
     String refreshTokenCookieName;
+    String agentHostCookieName;
     String cookieDomain;
 
     @Override
@@ -51,7 +52,7 @@ public class OnLoginSuccessHandler
             HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException {
         try {
-            logger.info("platform: On login success handler, setting Oauth2 tokens");
+            logger.info("platform: On login success handler invoked, setting Oauth2 tokens");
 
             // Obtain OAuth2 tokens and set then into the authentication object
             passwordGrant.generatePlatTokens(authentication);
@@ -60,8 +61,7 @@ public class OnLoginSuccessHandler
             invalidateCookiesIfAny(request, response); 
 
             // set tokens in Cookies
-            setCookies(request, response, authentication
-         );
+            setCookies(request, response, authentication);
                 
             // redirect to user preferred app
             // setRedirectPerUserPreference(request, authentication);
@@ -82,6 +82,7 @@ public class OnLoginSuccessHandler
         PlatCookieService cookieService = new PlatCookieService();
         cookieService.setAccessTokenCookieName(getAccessTokenCookieName());
         cookieService.setRefreshTokenCookieName(getRefreshTokenCookieName());
+        cookieService.setAgentHostCookieName(getAgentHostCookieName());
         cookieService.setCookieDomain(this.getCookieDomain());
         cookieService.setCookiePath(this.getCookiePath(request));
         cookieService.invalidateCookies(request, response);
@@ -93,8 +94,13 @@ public class OnLoginSuccessHandler
 
         if (auth != null) {
             response.addCookie(createCookie(request, getAccessTokenCookieName(), (String) auth.getTokens().getAccessToken()));
-
             response.addCookie(createCookie(request, getRefreshTokenCookieName(), (String) auth.getTokens().getRefreshToken()));
+            // save the agent host
+            String host = request.getHeader("host");
+            logger.info("====> agent host = " + host);
+            logger.info("create a new token with name: " + agentHostCookieName);
+            response.addCookie(createCookie(request, getAgentHostCookieName(), host));
+
         }
     }
 
@@ -177,6 +183,14 @@ public class OnLoginSuccessHandler
 
     public void setCookieDomain(String cookieDomain) {
         this.cookieDomain = cookieDomain;
+    }
+
+    public String getAgentHostCookieName() {
+        return agentHostCookieName;
+    }
+
+    public void setAgentHostCookieName(String agentHostCookieName) {
+        this.agentHostCookieName = agentHostCookieName;
     }
 
     @Override

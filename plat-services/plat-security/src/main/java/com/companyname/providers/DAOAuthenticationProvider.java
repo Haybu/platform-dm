@@ -11,6 +11,7 @@ import com.companyname.services.PlatUserAuthenticationCache;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -34,6 +35,7 @@ public class DAOAuthenticationProvider extends DaoAuthenticationProvider {
             Logger.getLogger(DAOAuthenticationProvider.class.getName()); 
     
     @Autowired
+    @Qualifier("jdbcUserDetailsService")
     UserDetailsService userDetailsService;
     
     @Autowired
@@ -61,22 +63,18 @@ public class DAOAuthenticationProvider extends DaoAuthenticationProvider {
             auth = cache.authenticateFromCache(authentication);
            
             // perform authentication against our user's database store
-            if (auth.isAuthenticated()) {            
-                logger.info("User [" + username 
+           if (auth!=null && auth.isAuthenticated()) {
+                logger.info("User [" + username
                         + "] is successfully authenticated against the cache");
             } else {
                 auth = super.authenticate(authentication);
                 cache.add(auth);
-                logger.info("User [" + username 
-                        + "] is successfully authenticated against DB store");
+                logger.info("User [" + username + "] is successfully authenticated against DB store");
             }
             
             // build platform authentication object
-            Authentication platformAuthentication = 
-                    PlatAuthentication.getPlatAuthentication(auth);
-            
-            ((PlatAuthentication)platformAuthentication).setUserCredentials(credentials);                        
-                       
+            Authentication platformAuthentication = PlatAuthentication.getPlatAuthentication(auth);
+            ((PlatAuthentication)platformAuthentication).setUserCredentials(credentials);
             return platformAuthentication;
             
        } catch (AuthenticationException ex1) {

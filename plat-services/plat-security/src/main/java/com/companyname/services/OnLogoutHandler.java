@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,8 @@ public class OnLogoutHandler implements LogoutHandler {
                 Logger.getLogger(OnLogoutHandler.class.getName());
         
     private String accessTokenCookieName;
-    private String refreshTokenCookieName; 
+    private String refreshTokenCookieName;
+    private  String agentHostCookieName;
     private String cookiePath;
     private String cookieDomain; 
     
@@ -44,9 +46,12 @@ public class OnLogoutHandler implements LogoutHandler {
                 , HttpServletResponse response
                 , Authentication authentication) 
     {
+        logger.info("Logout handler invoked");
+
         PlatCookieService cookieService = new PlatCookieService();
         cookieService.setAccessTokenCookieName(getAccessTokenCookieName());
         cookieService.setRefreshTokenCookieName(getRefreshTokenCookieName());
+        cookieService.setAgentHostCookieName(getAgentHostCookieName());
         cookieService.setCookieDomain(getCookieDomain());
         cookieService.setCookiePath(getCookiePath(request));
         cookieService.setTokenService(getTokenService());
@@ -59,6 +64,12 @@ public class OnLogoutHandler implements LogoutHandler {
         // clear tokens on cookies
         cookieService.invalidateCookies(request, response); 
         logger.info("Oauth2 tokens cookies are cancelled after logging out");
+
+        // if user still logged in, then invalidate the authentication token from the context
+        if (authentication != null && authentication.isAuthenticated()) {
+            logger.info("Invalidating the authentication token in the security context.");
+            SecurityContextHolder.getContext().setAuthentication(null);
+        }
 
     }     
     
@@ -107,6 +118,14 @@ public class OnLogoutHandler implements LogoutHandler {
 
     public void setTokenService(DefaultTokenServices tokenService) {
         this.tokenService = tokenService;
+    }
+
+    public String getAgentHostCookieName() {
+        return agentHostCookieName;
+    }
+
+    public void setAgentHostCookieName(String agentHostCookieName) {
+        this.agentHostCookieName = agentHostCookieName;
     }
     
 }

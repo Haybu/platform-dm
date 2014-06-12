@@ -24,9 +24,10 @@ public class PlatCookieService {
                 Logger.getLogger(PlatCookieService.class.getName());
     
     private String accessTokenCookieName;
-    private String refreshTokenCookieName; 
+    private String refreshTokenCookieName;
+    private  String agentHostCookieName;
     private String cookiePath;
-    private String cookieDomain; 
+    private String cookieDomain;
     DefaultTokenServices tokenService;
 
     public DefaultTokenServices getTokenService() {
@@ -81,6 +82,11 @@ public class PlatCookieService {
     
     public String getCookieValue(HttpServletRequest request, String key) {
         Cookie cookie = getCookie(request, key);
+        if(cookie == null) {
+            logger.info("cookie for key \"" + key + "\" is not found");
+        } else {
+            logger.info("cookie for key \"" + key + "\" = " + cookie.getValue());
+        }
         return (cookie==null)? null : cookie.getValue();        
     }
     
@@ -89,6 +95,7 @@ public class PlatCookieService {
     {
         invalidateCookie(request, response, getAccessTokenCookieName());
         invalidateCookie(request, response, getRefreshTokenCookieName());
+        //invalidateCookie(request, response, getAgentHostCookieName());
     }
     
     public void invalidateCookie(HttpServletRequest request
@@ -110,6 +117,14 @@ public class PlatCookieService {
         cookie.setPath(getCookiePath());
         cookie.setDomain(getCookieDomain());
         response.addCookie(cookie);
+    }
+
+    public String getAgentHostCookieName() {
+        return agentHostCookieName;
+    }
+
+    public void setAgentHostCookieName(String agentHostCookieName) {
+        this.agentHostCookieName = agentHostCookieName;
     }
     
 }

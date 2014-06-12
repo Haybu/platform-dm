@@ -7,6 +7,8 @@ package com.companyname;
 
 import com.companyname.providers.DAOAuthenticationProvider;
 import java.util.logging.Logger;
+
+import com.companyname.services.PlatRequestMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,6 +36,10 @@ public class PlatWebSecurityConfig
         logger.info("Common web security Config is loaded");
     }
 
+    public PlatRequestMatcher requestMatcher() {
+        return new PlatRequestMatcher("/not-exist", "not-exist");
+    }
+
     @Override
     public void configure(AuthenticationManagerBuilder auth)
             throws Exception {
@@ -41,14 +47,15 @@ public class PlatWebSecurityConfig
         auth.authenticationProvider(daoAuthenticationProvider);
     }   
 
-    /**
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         logger.info("Platform: Oauth module security configuration loaded.");
-        http.anonymous();
+        http
+          .requestMatcher(requestMatcher())
+          .authorizeRequests()
+          .anyRequest().denyAll();
                 
     }
-     **/
 
     @Override
     @Bean

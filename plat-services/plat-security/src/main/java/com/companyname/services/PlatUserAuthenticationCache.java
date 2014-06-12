@@ -27,7 +27,9 @@ public class PlatUserAuthenticationCache {
     
     private Map<String, Authentication> cache;
     
-    public PlatUserAuthenticationCache() {}
+    public PlatUserAuthenticationCache() {
+        init();
+    }
     
     private void init() {
         if (cache == null) {

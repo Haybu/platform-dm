@@ -6,9 +6,12 @@
 package com.companyname;
 
 import com.companyname.filters.Oauth2ReAuthenticationFilter;
+import com.companyname.handlers.PlatAccessDeniedHandler;
 import com.companyname.services.OnLogoutHandler;
 import java.util.logging.Logger;
 import javax.servlet.Filter;
+
+import com.companyname.services.PlatRequestMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -44,8 +47,8 @@ public class WebSecurityConfig
     @Value("${oauth2.clientId}")
     String clientId;
     
-    @Value("${plat.base.loginUrl}")
-    String loginURL;
+    //@Value("${plat.base.loginUrl}")
+    //String loginURL;
 
     @Autowired
     DefaultTokenServices defaultTokenServices;
@@ -71,23 +74,33 @@ public class WebSecurityConfig
         return filter;
     }
 
+    @Bean
+    public PlatAccessDeniedHandler deniedHandler() {
+        return new PlatAccessDeniedHandler();
+    }
+
+    public PlatRequestMatcher requestMatcher() {
+        return new PlatRequestMatcher("/loginRedirect", "leander.drillmap.com");
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+            .requestMatcher(requestMatcher())
             .addFilterAfter(oauth2Filter(), UsernamePasswordAuthenticationFilter.class)
             .authorizeRequests()
             .anyRequest().hasRole("SUPERVISOR")
             .and().exceptionHandling().accessDeniedPage("/403")
             .and()  
                 .formLogin()
-                .loginPage(loginURL)
-                //.permitAll()
+                .loginPage("/loginRedirect")
+                .permitAll()
             .and()
                 .logout()
                 .addLogoutHandler(onLogoutHandler)
                 //.invalidateHttpSession(true)
                 //.deleteCookies("JSESSIONID")
-                //.permitAll()
+                .permitAll()
             .and()
                 .csrf().requireCsrfProtectionMatcher(new AntPathRequestMatcher("/logout")).disable();
     }
