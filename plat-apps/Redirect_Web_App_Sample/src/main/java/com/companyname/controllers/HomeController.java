@@ -33,7 +33,7 @@ public class HomeController {
     {
         logger.info("Inside the redirect app");
 
-        model.addAttribute("technology", "the fantastic Spring Boot");        
+        model.addAttribute("technology", "W1 app says: the fantastic Spring Boot.");
         return "home";
     }
 
